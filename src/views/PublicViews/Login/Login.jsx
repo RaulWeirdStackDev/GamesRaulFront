@@ -1,7 +1,13 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 export const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -28,13 +34,14 @@ export const Login = () => {
         return;
       }
 
-      localStorage.setItem("token", data.token);
+      // Guardar usuario en context y localStorage
+      login(data.user);
 
       Swal.fire("¡Éxito!", `Bienvenido ${data.user.name}`, "success");
 
-      // Aquí podrías redirigir o actualizar estado global
-      // Ejemplo: navigate("/dashboard")
-    // eslint-disable-next-line no-unused-vars
+      // Redirigir a /games
+      navigate("/games", { replace: true });
+
     } catch (error) {
       Swal.fire("Error", "No se pudo conectar con el servidor", "error");
     }
