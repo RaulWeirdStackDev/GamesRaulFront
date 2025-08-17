@@ -1,3 +1,8 @@
+// import { Register } from "./views/PublicViews/Register/Register"
+
+import { Footer } from "./components/Footer"
+import { Navbar } from "./components/Navbar"
+import { Games } from "./views/PrivateViews/Games/Games"
 
 
 function App() {
@@ -5,7 +10,10 @@ function App() {
 
   return (
     <>
-<h1>hola</h1>
+{/* <Register /> */}
+<Navbar />
+<Games />
+<Footer />
     </>
   )
 }
