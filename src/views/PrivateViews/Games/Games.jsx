@@ -3,14 +3,14 @@ import { useState } from "react";
 export const Games = () => {
   const games = [
     {
-      src: "https://out-of-eden.vercel.app/",
+      src: import.meta.env.VITE_GAME_OOE,
       title: "Out of Eden",
       logo: "/logoOoE.png",
       className:
         "w-[640px] h-[400px] sm:w-[720px] sm:h-[450px] md:w-[800px] md:h-[500px] lg:w-[900px] lg:h-[560px] block",
     },
     {
-      src: "https://real-fighters-v1-1.vercel.app/",
+      src: import.meta.env.VITE_GAME_RF,
       title: "Real Fighters",
       logo: "/logoRF.png",
       className:
