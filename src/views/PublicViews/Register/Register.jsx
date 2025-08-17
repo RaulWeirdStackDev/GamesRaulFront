@@ -1,7 +1,13 @@
+/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 export const Register = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -52,10 +58,16 @@ export const Register = () => {
         return;
       }
 
+      // Guardar usuario en context
+      login(data.user);
+
       Swal.fire("Registro exitoso 🎉", `¡Bienvenido, ${data.user.name}!`, "success");
 
+      // Redirigir a /games
+      navigate("/games", { replace: true });
+
       e.target.reset();
-    // eslint-disable-next-line no-unused-vars
+
     } catch (error) {
       Swal.fire("Error", "No se pudo conectar con el servidor", "error");
     }
