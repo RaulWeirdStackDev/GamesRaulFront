@@ -85,15 +85,6 @@ export const Register = () => {
                 className="h-28 drop-shadow-md"
                 alt="logo"
               />
-              {/* <p
-                className="absolute inset-0 flex items-center justify-center text-white text-2xl font-bold"
-                style={{
-                  textShadow:
-                    "-1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black, 1px 1px 0 black",
-                }}
-              >
-                NotasApp
-              </p> */}
             </div>
           </div>
         </header>
@@ -311,8 +302,6 @@ export const Register = () => {
           </button>
         </form>
       </div>
-
-
     </div>
   );
 };

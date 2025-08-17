@@ -2,7 +2,8 @@
 
 import { Footer } from "./components/Footer"
 import { Navbar } from "./components/Navbar"
-import { Games } from "./views/PrivateViews/Games/Games"
+import { Login } from "./views/PublicViews/Login/Login"
+// import { Games } from "./views/PrivateViews/Games/Games"
 
 
 function App() {
@@ -10,9 +11,10 @@ function App() {
 
   return (
     <>
-{/* <Register /> */}
 <Navbar />
-<Games />
+{/* <Register /> */}
+{/* <Games /> */}
+<Login />
 <Footer />
     </>
   )
