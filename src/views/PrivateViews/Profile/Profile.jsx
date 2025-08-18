@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext"; 
+import { useAuth } from "../../../context/AuthContext";
 
 export const Profile = () => {
   const { userId } = useParams();
@@ -12,10 +12,10 @@ export const Profile = () => {
   const [updating, setUpdating] = useState(false);
   const [message, setMessage] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState("Sube tu foto de perfil aquí");
 
-  // Debug: Mostrar valores en consola
   console.log("userId desde params:", userId);
-  console.log("user actual:", user); 
+  console.log("user actual:", user);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -23,14 +23,14 @@ export const Profile = () => {
         console.log("Fetching profile for userId:", userId);
         const res = await fetch(`http://localhost:3007/api/profile/${userId}`);
         console.log("Response status:", res.status);
-        
+
         if (!res.ok) {
           throw new Error(`Error ${res.status}: ${res.statusText}`);
         }
-        
+
         const data = await res.json();
         console.log("Profile data received:", data);
-        
+
         setProfile(data);
         setBio(data.bio || "");
         setPhoto(data.photo || "");
@@ -41,23 +41,88 @@ export const Profile = () => {
         setLoading(false);
       }
     };
-    
+
     if (userId) {
       fetchProfile();
     }
   }, [userId]);
 
+  const compressImage = (file, maxWidth, maxHeight, quality) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        img.src = e.target.result;
+      };
+      reader.onerror = (err) => reject(err);
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round((width * maxHeight) / height);
+            height = maxHeight;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        const base64 = canvas.toDataURL("image/jpeg", quality);
+        if (!base64.startsWith("data:image/jpeg;base64,")) {
+          reject(new Error("Error al generar la imagen comprimida"));
+        }
+        resolve(base64);
+      };
+      img.onerror = (err) => reject(err);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setMessage("❌ La imagen es demasiado grande (máximo 5MB)");
+        setSelectedFileName("Sube tu foto de perfil aquí");
+        return;
+      }
+      try {
+        setSelectedFileName(file.name); // Mostrar el nombre del archivo seleccionado
+        const compressedBase64 = await compressImage(file, 300, 300, 0.7);
+        setPhoto(compressedBase64);
+      } catch (err) {
+        console.error("Error al comprimir la imagen:", err);
+        setMessage("❌ Error al procesar la imagen");
+        setSelectedFileName("Sube tu foto de perfil aquí");
+      }
+    }
+  };
+
   const handleUpdate = async () => {
     console.log("Iniciando actualización...");
-    console.log("Datos a enviar:", { bio, photo });
-    
+    console.log("Datos a enviar:", { bio, photo: photo ? `${photo.slice(0, 30)}...` : "vacío" });
+
+    if (photo && !photo.startsWith("data:image/")) {
+      setMessage("❌ La imagen no es válida");
+      return;
+    }
+
     setUpdating(true);
     setMessage("");
-    
+
     try {
       const res = await fetch(`http://localhost:3007/api/profile/${userId}`, {
         method: "PUT",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ bio, photo }),
@@ -74,11 +139,10 @@ export const Profile = () => {
 
       const updated = await res.json();
       console.log("Profile updated successfully:", updated);
-      
+
       setProfile(updated);
       setMessage("✅ Perfil actualizado correctamente");
-      
-      // Salir del modo edición después de 2 segundos
+
       setTimeout(() => {
         setIsEditing(false);
         setMessage("");
@@ -116,18 +180,16 @@ export const Profile = () => {
 
   return (
     <div className="p-6 max-w-4xl mx-auto flex flex-col items-center gap-6">
-
-
-      {/* Mensajes */}
       {message && (
-        <div className={`w-full p-3 rounded ${
-          message.includes('✅') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-        }`}>
+        <div
+          className={`w-full p-3 rounded ${
+            message.includes("✅") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+          }`}
+        >
           {message}
         </div>
       )}
 
-      {/* Foto */}
       <img
         src={photo || "/default-avatar.png"}
         alt="Perfil"
@@ -136,18 +198,38 @@ export const Profile = () => {
           e.target.src = "/default-avatar.png";
         }}
       />
-      
+
       {isEditing ? (
         <>
-          <input
-            type="text"
-            placeholder="URL de la foto"
-            value={photo}
-            onChange={(e) => setPhoto(e.target.value)}
-            className="border p-2 rounded w-full"
-          />
-
-          {/* Bio */}
+          <div className="relative w-full max-w-xs">
+            <label
+              htmlFor="photo-upload"
+              className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer transition-colors duration-200"
+            >
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                />
+              </svg>
+              {selectedFileName}
+            </label>
+            <input
+              id="photo-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+            />
+          </div>
           <textarea
             placeholder="Escribe tu bio..."
             value={bio}
@@ -155,26 +237,22 @@ export const Profile = () => {
             className="border p-2 rounded w-full"
             rows="4"
           />
-
           <div className="flex gap-4">
             <button
               onClick={handleUpdate}
               disabled={updating}
               className={`px-6 py-2 rounded text-white font-medium ${
-                updating 
-                  ? 'bg-gray-400 cursor-not-allowed' 
-                  : 'bg-blue-600 hover:bg-blue-700'
+                updating ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
               }`}
             >
               {updating ? "Guardando..." : "Guardar"}
             </button>
-            
             <button
               onClick={() => {
                 setIsEditing(false);
-                // Resetear valores originales
                 setBio(profile.bio || "");
                 setPhoto(profile.photo || "");
+                setSelectedFileName("Sube tu foto de perfil aquí");
                 setMessage("");
               }}
               className="px-6 py-2 rounded bg-gray-500 text-white hover:bg-gray-600"
@@ -185,11 +263,9 @@ export const Profile = () => {
         </>
       ) : (
         <>
-          {/* Vista de solo lectura */}
           <div className="w-full max-w-2xl text-center">
             <h2 className="text-2xl font-bold mb-4">Mi Perfil</h2>
             <p className="text-gray-600 mb-4">{bio || "Sin biografía"}</p>
-            
             <button
               onClick={() => setIsEditing(true)}
               className="px-6 py-2 rounded bg-green-600 text-white hover:bg-green-700"
@@ -200,7 +276,6 @@ export const Profile = () => {
         </>
       )}
 
-      {/* Juegos favoritos */}
       <div className="w-full max-w-2xl mt-8">
         <h2 className="text-2xl font-bold text-center mb-6">Juegos Favoritos</h2>
         {profile.favorites && profile.favorites.length > 0 ? (
