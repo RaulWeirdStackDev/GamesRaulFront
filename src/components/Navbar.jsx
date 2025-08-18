@@ -6,7 +6,27 @@ export const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [profileOpen, setProfileOpen] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState("");
   const dropdownRef = useRef(null);
+
+  // Obtener foto del perfil cuando hay usuario logueado
+  useEffect(() => {
+    const fetchProfilePhoto = async () => {
+      if (user?.id) {
+        try {
+          const res = await fetch(`http://localhost:3007/api/profile/${user.id}`);
+          if (res.ok) {
+            const data = await res.json();
+            setProfilePhoto(data.photo || "");
+          }
+        } catch (err) {
+          console.error("Error fetching profile photo:", err);
+        }
+      }
+    };
+
+    fetchProfilePhoto();
+  }, [user?.id]);
 
   // Cerrar dropdown cuando se hace clic fuera
   useEffect(() => {
@@ -23,7 +43,8 @@ export const Navbar = () => {
 
   const handleLogout = () => {
     logout();
-    setProfileOpen(false); // Cerrar el dropdown
+    setProfileOpen(false);
+    setProfilePhoto(""); // Limpiar foto al cerrar sesión
     navigate("/login", { replace: true });
   };
 
@@ -66,8 +87,17 @@ export const Navbar = () => {
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="hover:underline flex items-center space-x-1 bg-transparent border-none cursor-pointer text-white font-medium text-lg p-2 rounded-md hover:bg-white/10 transition-colors"
+                  className="hover:underline flex items-center space-x-2 bg-transparent border-none cursor-pointer text-white font-medium text-lg p-2 rounded-md hover:bg-white/10 transition-colors"
                 >
+                  {/* Foto de perfil */}
+                  <img
+                    src={profilePhoto || "/default-avatar.png"}
+                    alt="Profile"
+                    className="w-8 h-8 rounded-full object-cover border-2 border-white/30"
+                    onError={(e) => {
+                      e.target.src = "/default-avatar.png";
+                    }}
+                  />
                   <span>{user.name}</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
