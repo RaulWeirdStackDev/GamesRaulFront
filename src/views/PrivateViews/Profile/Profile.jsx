@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-// import { useAuth } from "../../../context/AuthContext"; // Comentado temporalmente
+import { useAuth } from "../../../context/AuthContext"; 
 
 export const Profile = () => {
   const { userId } = useParams();
-  // const { user } = useAuth(); // Comentado temporalmente
+  const { user } = useAuth();
   const [profile, setProfile] = useState(null);
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
@@ -15,7 +15,7 @@ export const Profile = () => {
 
   // Debug: Mostrar valores en consola
   console.log("userId desde params:", userId);
-  // console.log("user actual:", user); // Comentado temporalmente
+  console.log("user actual:", user); 
 
   useEffect(() => {
     const fetchProfile = async () => {
