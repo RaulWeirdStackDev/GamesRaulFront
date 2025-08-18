@@ -31,6 +31,18 @@ export const Profile = () => {
         const data = await res.json();
         console.log("Profile data received:", data);
 
+        // Obtener detalles de los juegos favoritos con logos si no están incluidos
+        const favoriteIds = data.favorites?.map(fav => fav.id) || [];
+        if (favoriteIds.length > 0 && !data.favorites[0].logo) {
+          const gamesRes = await fetch("http://localhost:3007/api/games");
+          const gamesData = await gamesRes.json();
+          const favoritesWithLogo = data.favorites.map(fav => {
+            const gameDetail = gamesData.find(g => g.id === fav.id);
+            return { ...fav, logo: gameDetail?.logo };
+          });
+          data.favorites = favoritesWithLogo;
+        }
+
         setProfile(data);
         setBio(data.bio || "");
         setPhoto(data.photo || "");
@@ -96,7 +108,7 @@ export const Profile = () => {
         return;
       }
       try {
-        setSelectedFileName(file.name); // Mostrar el nombre del archivo seleccionado
+        setSelectedFileName(file.name);
         const compressedBase64 = await compressImage(file, 300, 300, 0.7);
         setPhoto(compressedBase64);
       } catch (err) {
@@ -190,18 +202,34 @@ export const Profile = () => {
         </div>
       )}
 
-      <img
-        src={photo || "/default-avatar.png"}
-        alt="Perfil"
-        className="w-32 h-32 rounded-full object-cover"
-        onError={(e) => {
-          e.target.src = "/default-avatar.png";
-        }}
-      />
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 text-center mt-12">
+        <img
+          src={photo || "/default-avatar.png"}
+          alt="Perfil"
+          className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-blue-200"
+          onError={(e) => {
+            e.target.src = "/default-avatar.png";
+          }}
+        />
+        {user?.username && (
+          <h2 className="text-xl font-bold text-gray-800 mb-2">
+            Bienvenido, {user.username}!
+          </h2>
+        )}
+        <p className="text-gray-600 mb-4">{bio || "Sin biografía"}</p>
+        {!isEditing && (
+          <button
+            onClick={() => setIsEditing(true)}
+            className="px-6 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition-colors"
+          >
+            Editar Perfil
+          </button>
+        )}
+      </div>
 
-      {isEditing ? (
-        <>
-          <div className="relative w-full max-w-xs">
+      {isEditing && (
+        <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+          <div className="relative w-full max-w-xs mx-auto mb-4">
             <label
               htmlFor="photo-upload"
               className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer transition-colors duration-200"
@@ -234,10 +262,10 @@ export const Profile = () => {
             placeholder="Escribe tu bio..."
             value={bio}
             onChange={(e) => setBio(e.target.value)}
-            className="border p-2 rounded w-full"
+            className="border p-2 rounded w-full mb-4"
             rows="4"
           />
-          <div className="flex gap-4">
+          <div className="flex gap-4 justify-center">
             <button
               onClick={handleUpdate}
               disabled={updating}
@@ -260,35 +288,30 @@ export const Profile = () => {
               Cancelar
             </button>
           </div>
-        </>
-      ) : (
-        <>
-          <div className="w-full max-w-2xl text-center">
-            <h2 className="text-2xl font-bold mb-4">Mi Perfil</h2>
-            <p className="text-gray-600 mb-4">{bio || "Sin biografía"}</p>
-            <button
-              onClick={() => setIsEditing(true)}
-              className="px-6 py-2 rounded bg-green-600 text-white hover:bg-green-700"
-            >
-              Editar Perfil
-            </button>
-          </div>
-        </>
+        </div>
       )}
 
-      <div className="w-full max-w-2xl mt-8">
+      <div className="w-full max-w-3xl mt-8">
         <h2 className="text-2xl font-bold text-center mb-6">Juegos Favoritos</h2>
         {profile.favorites && profile.favorites.length > 0 ? (
-          <div className="grid gap-3">
+          <div className="flex justify-center flex-wrap gap-6">
             {profile.favorites.map((game) => (
               <div
                 key={game.id}
-                className="flex justify-between items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow w-full max-w-xs"
               >
-                <span className="font-medium text-gray-800">{game.title}</span>
+                <img
+                  src={game.logo}
+                  alt={`${game.title} logo`}
+                  className="w-16 h-16 object-contain mb-2 rounded"
+                  onError={(e) => {
+                    e.target.src = "/default-logo.png";
+                  }}
+                />
+                <span className="text-sm font-medium text-gray-800 text-center">{game.title}</span>
                 <button
-                  className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition-colors text-sm font-medium"
                   onClick={() => handleRemoveFavorite(game.id)}
+                  className="mt-2 px-3 py-1 bg-red-500 text-white text-xs rounded-md hover:bg-red-600 transition-colors"
                 >
                   Eliminar
                 </button>
