@@ -15,7 +15,6 @@ export const Navbar = () => {
         setProfileOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
@@ -93,7 +92,7 @@ export const Navbar = () => {
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 text-gray-700 z-[9999] overflow-hidden">
                     <div className="py-1">
                       <Link
-                        to="/profile"
+                        to={`/profile/${user.id}`}
                         className="block px-4 py-3 text-sm hover:bg-gray-100 transition-colors border-b border-gray-100"
                         onClick={() => setProfileOpen(false)}
                       >
@@ -112,10 +111,10 @@ export const Navbar = () => {
                               d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                             />
                           </svg>
-                          <span>Mi cuenta</span>
+                          <span>Mi Perfil</span>
                         </div>
                       </Link>
-                      
+
                       <button
                         onClick={handleLogout}
                         className="w-full text-left block px-4 py-3 text-sm cursor-pointer hover:bg-red-50 hover:text-red-600 transition-colors"

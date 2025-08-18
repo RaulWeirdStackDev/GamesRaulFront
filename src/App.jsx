@@ -6,6 +6,7 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { Register } from "./views/PublicViews/Register/Register";
 import { Login } from "./views/PublicViews/Login/Login";
 import { Games } from "./views/PrivateViews/Games/Games";
+import { Profile } from "./views/PrivateViews/Profile/Profile";
 import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 
@@ -64,6 +65,13 @@ function App() {
               </PrivateRoute>
             }
           />
+          <Route
+  path="/profile/:userId"
+  element={
+    <PrivateRoute>
+      <Profile />
+    </PrivateRoute>}
+/>
 
           {/* Redirección por defecto */}
           <Route path="*" element={<Navigate to="/login" replace />} />
