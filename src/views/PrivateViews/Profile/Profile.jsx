@@ -191,6 +191,7 @@ export const Profile = () => {
   if (!profile) return <div className="p-6 text-center text-red-500">No se encontró el perfil</div>;
 
   return (
+
     <div className="p-6 max-w-4xl mx-auto flex flex-col items-center gap-6">
       {message && (
         <div
