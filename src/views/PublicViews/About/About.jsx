@@ -62,7 +62,7 @@ export const About = () => {
       </div>
 
       {/* Skills */}
-      <h2 className="text-2xl font-semibold mb-8 text-center">Habilidades</h2>
+      <h2 className="text-2xl font-semibold mb-8 text-center">Mi Stack Tecnológico</h2>
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-10 text-center my-12">
         {skills.map((skill, index) => (
           <div
