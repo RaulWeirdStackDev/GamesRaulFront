@@ -29,7 +29,7 @@ export const Slider=() => {
   }, []);
 
   return (
-    <div className="relative w-full max-w-3xl mx-auto overflow-hidden rounded-2xl shadow-lg">
+    <div className="relative w-full max-w-xl mx-auto overflow-hidden rounded-2xl shadow-lg mt-8">
       {/* Slides */}
       <div
         className="flex transition-transform ease-in-out duration-500"
