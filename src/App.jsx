@@ -11,6 +11,7 @@ import { Navbar } from "./components/Navbar";
 import { Footer } from "./components/Footer";
 import { Contacto } from "./views/PublicViews/Contact/Contact";
 import { Home } from "./views/PublicViews/Home/Home";
+import { ScrollToTop } from "./components/ScrollToTop";
 
 // Componente para rutas privadas
 const PrivateRoute = ({ children }) => {
@@ -38,6 +39,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <Navbar />
         <Routes>
           {/* Redirección raíz a Home */}
