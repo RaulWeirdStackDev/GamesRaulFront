@@ -36,11 +36,15 @@ export const Login = () => {
       login(data.user);
       Swal.fire("¡Éxito!", `Bienvenido ${data.user.name}`, "success");
       navigate("/games", { replace: true });
-
     // eslint-disable-next-line no-unused-vars
     } catch (error) {
       Swal.fire("Error", "No se pudo conectar con el servidor", "error");
     }
+  };
+
+  // Redirigir a la página de recuperación de contraseña
+  const handleForgotPassword = () => {
+    navigate("/forgot-password");
   };
 
   return (
@@ -92,7 +96,7 @@ export const Login = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="flex-1 border border-gray-300 rounded-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="🔑 ******"
+                  placeholder="🔒 ******"
                 />
                 <button
                   type="button"
@@ -169,6 +173,14 @@ export const Login = () => {
               >
                 Regístrate
               </Link>
+            </p>
+
+            {/* Link a recuperar contraseña */}
+            <p
+              className="mt-2 text-blue-600 hover:underline cursor-pointer text-center"
+              onClick={handleForgotPassword}
+            >
+              ¿Olvidaste tu contraseña?
             </p>
           </form>
         </div>

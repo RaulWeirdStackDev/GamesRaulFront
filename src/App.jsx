@@ -14,6 +14,10 @@ import { Home } from "./views/PublicViews/Home/Home";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { About } from "./views/PublicViews/About/About";
 
+// 🔥 NUEVAS IMPORTACIONES - Rutas de recuperación de contraseña
+import { ForgotPassword } from "./views/PublicViews/ForgotPassword/ForgotPassword";
+import { ResetPassword } from "./views/PublicViews/ResetPassword/ResetPassword";
+
 // Componente para rutas privadas
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -65,6 +69,24 @@ function App() {
             element={
               <GuestRoute>
                 <Register />
+              </GuestRoute>
+            }
+          />
+
+          {/* 🔥 NUEVAS RUTAS - Recuperación de contraseña (solo para invitados) */}
+          <Route
+            path="/forgot-password"
+            element={
+              <GuestRoute>
+                <ForgotPassword />
+              </GuestRoute>
+            }
+          />
+          <Route
+            path="/reset-password/:token"
+            element={
+              <GuestRoute>
+                <ResetPassword />
               </GuestRoute>
             }
           />
