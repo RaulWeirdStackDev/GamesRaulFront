@@ -215,17 +215,17 @@ export const Games = () => {
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-blue-600 mb-1">Description</h3>
+          <h3 className="text-xl font-semibold text-blue-600 mb-1">Descripción</h3>
           <p className="text-gray-700">{selectedGame.description}</p>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-blue-600 mb-1">Instructions</h3>
+          <h3 className="text-xl font-semibold text-blue-600 mb-1">Instrucciones</h3>
           <p className="text-gray-700">{selectedGame.instructions}</p>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-blue-600 mb-1">Technology</h3>
+          <h3 className="text-xl font-semibold text-blue-600 mb-1">Tecnologías</h3>
           <p className="text-gray-700 font-medium">{selectedGame.technologies}</p>
         </div>
       </div>
