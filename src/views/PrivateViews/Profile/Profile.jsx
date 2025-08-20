@@ -187,147 +187,224 @@ export const Profile = () => {
     }
   };
 
-  if (loading) return <div className="p-6 text-center">Cargando perfil...</div>;
-  if (!profile) return <div className="p-6 text-center text-red-500">No se encontró el perfil</div>;
+  if (loading) return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="text-center">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-500 mx-auto mb-4"></div>
+        <p className="text-white text-lg">Cargando perfil...</p>
+      </div>
+    </div>
+  );
+  
+  if (!profile) return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="text-center text-red-400 text-xl">
+        <div className="text-6xl mb-4">⚠️</div>
+        No se encontró el perfil
+      </div>
+    </div>
+  );
 
   return (
-
-    <div className="p-6 max-w-4xl mx-auto flex flex-col items-center gap-6">
-      {message && (
-        <div
-          className={`w-full p-3 rounded ${
-            message.includes("✅") ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-          }`}
-        >
-          {message}
-        </div>
-      )}
-
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 text-center mt-12">
-        <img
-          src={photo || "/default-avatar.png"}
-          alt="Perfil"
-          className="w-32 h-32 rounded-full object-cover mx-auto mb-4 border-4 border-blue-200"
-          onError={(e) => {
-            e.target.src = "/default-avatar.png";
-          }}
-        />
-        {user?.username && (
-          <h2 className="text-xl font-bold text-gray-800 mb-2">
-            Bienvenido, {user.username}!
-          </h2>
-        )}
-        <p className="text-gray-600 mb-4">{bio || "Sin biografía"}</p>
-        {!isEditing && (
-          <button
-            onClick={() => setIsEditing(true)}
-            className="px-6 py-2 rounded bg-green-600 text-white hover:bg-green-700 transition-colors"
-          >
-            Editar Perfil
-          </button>
-        )}
-      </div>
-
-      {isEditing && (
-        <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
-          <div className="relative w-full max-w-xs mx-auto mb-4">
-            <label
-              htmlFor="photo-upload"
-              className="flex items-center justify-center w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 cursor-pointer transition-colors duration-200"
-            >
-              <svg
-                className="w-5 h-5 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-              {selectedFileName}
-            </label>
-            <input
-              id="photo-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleFileChange}
-              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-            />
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 py-12">
+      <div className="max-w-6xl mx-auto px-4">
+        {/* Message Notification */}
+        {message && (
+          <div className={`fixed top-6 right-6 z-50 p-4 rounded-lg shadow-2xl transform transition-all duration-300 ${
+            message.includes("✅") 
+              ? "bg-gradient-to-r from-emerald-500 to-green-600 text-white" 
+              : "bg-gradient-to-r from-red-500 to-pink-600 text-white"
+          }`}>
+            <div className="flex items-center gap-2">
+              <div className="text-xl">{message.includes("✅") ? "✅" : "❌"}</div>
+              <p className="font-medium">{message.replace(/[✅❌]/g, '').trim()}</p>
+            </div>
           </div>
-          <textarea
-            placeholder="Escribe tu bio..."
-            value={bio}
-            onChange={(e) => setBio(e.target.value)}
-            className="border p-2 rounded w-full mb-4"
-            rows="4"
-          />
-          <div className="flex gap-4 justify-center">
-            <button
-              onClick={handleUpdate}
-              disabled={updating}
-              className={`px-6 py-2 rounded text-white font-medium ${
-                updating ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              {updating ? "Guardando..." : "Guardar"}
-            </button>
-            <button
-              onClick={() => {
-                setIsEditing(false);
-                setBio(profile.bio || "");
-                setPhoto(profile.photo || "");
-                setSelectedFileName("Sube tu foto de perfil aquí");
-                setMessage("");
-              }}
-              className="px-6 py-2 rounded bg-gray-500 text-white hover:bg-gray-600"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      )}
+        )}
 
-      <div className="w-full max-w-3xl mt-8">
-        <h2 className="text-2xl font-bold text-center mb-6">Juegos Favoritos</h2>
-        {profile.favorites && profile.favorites.length > 0 ? (
-          <div className="flex justify-center flex-wrap gap-6">
-            {profile.favorites.map((game) => (
-              <div
-                key={game.id}
-                className="flex flex-col items-center bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow w-full max-w-xs"
-              >
+        {/* Profile Header */}
+        <div className="relative">
+          {/* Background Glow */}
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-3xl blur-3xl"></div>
+          
+          <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mb-8">
+            <div className="flex flex-col lg:flex-row items-center gap-8">
+              {/* Profile Image */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-lg opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <img
-                  src={game.logo}
-                  alt={`${game.title} logo`}
-                  className="w-16 h-16 object-contain mb-2 rounded"
+                  src={photo || "/default-avatar.png"}
+                  alt="Perfil"
+                  className="relative w-40 h-40 rounded-full object-cover border-4 border-white/30 shadow-2xl"
                   onError={(e) => {
-                    e.target.src = "/default-logo.png";
+                    e.target.src = "/default-avatar.png";
                   }}
                 />
-                <span className="text-sm font-medium text-gray-800 text-center">{game.title}</span>
-                <button
-                  onClick={() => handleRemoveFavorite(game.id)}
-                  className="mt-2 px-3 py-1 bg-red-500 text-white text-xs rounded-md hover:bg-red-600 transition-colors"
-                >
-                  Eliminar
-                </button>
               </div>
-            ))}
+
+              {/* Profile Info */}
+              <div className="text-center lg:text-left flex-1">
+                {user?.username && (
+                  <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent mb-4">
+                    ¡Hola, {user.username}!
+                  </h1>
+                )}
+                <p className="text-gray-300 text-lg leading-relaxed mb-6 max-w-2xl">
+                  {bio || "Sin biografía disponible. ¡Edita tu perfil para contarnos sobre ti!"}
+                </p>
+                {!isEditing && (
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="group relative px-8 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                  >
+                    <span className="relative z-10 flex items-center gap-2">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                      Editar Perfil
+                    </span>
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
-        ) : (
-          <div className="text-center py-8">
-            <div className="text-gray-400 text-6xl mb-4">🎮</div>
-            <p className="text-gray-500 text-lg">No tienes juegos favoritos aún.</p>
-            <p className="text-gray-400 text-sm mt-2">
-              Ve a la sección de juegos y marca tus favoritos
-            </p>
+        </div>
+
+        {/* Edit Form */}
+        {isEditing && (
+          <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8 mb-8">
+            <h3 className="text-2xl font-bold text-white mb-6 text-center">Editar Perfil</h3>
+            
+            {/* Photo Upload */}
+            <div className="mb-6">
+              <label className="block text-white/80 text-sm font-medium mb-3">Foto de perfil</label>
+              <div className="relative">
+                <label
+                  htmlFor="photo-upload"
+                  className="group flex items-center justify-center w-full px-6 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-xl hover:from-blue-700 hover:to-purple-700 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+                >
+                  <svg
+                    className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  <span className="font-medium">{selectedFileName}</span>
+                </label>
+                <input
+                  id="photo-upload"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+              </div>
+            </div>
+
+            {/* Bio */}
+            <div className="mb-8">
+              <label className="block text-white/80 text-sm font-medium mb-3">Biografía</label>
+              <textarea
+                placeholder="Cuéntanos sobre ti..."
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="w-full p-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent backdrop-blur-sm resize-none transition-all duration-300"
+                rows="4"
+              />
+            </div>
+
+            {/* Buttons */}
+            <div className="flex gap-4 justify-center">
+              <button
+                onClick={handleUpdate}
+                disabled={updating}
+                className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg ${
+                  updating 
+                    ? "bg-gray-500/50 cursor-not-allowed text-gray-300" 
+                    : "bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white transform hover:scale-105 shadow-xl"
+                }`}
+              >
+                {updating ? (
+                  <span className="flex items-center gap-2">
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Guardando...
+                  </span>
+                ) : (
+                  "Guardar Cambios"
+                )}
+              </button>
+              <button
+                onClick={() => {
+                  setIsEditing(false);
+                  setBio(profile.bio || "");
+                  setPhoto(profile.photo || "");
+                  setSelectedFileName("Sube tu foto de perfil aquí");
+                  setMessage("");
+                }}
+                className="px-8 py-3 rounded-xl bg-white/10 border border-white/20 text-white hover:bg-white/20 font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Cancelar
+              </button>
+            </div>
           </div>
         )}
+
+        {/* Favorite Games */}
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl p-8">
+          <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-white to-purple-200 bg-clip-text text-transparent">
+            🎮 Juegos Favoritos
+          </h2>
+          
+          {profile.favorites && profile.favorites.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {profile.favorites.map((game) => (
+                <div
+                  key={game.id}
+                  className="group bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+                >
+                  <div className="text-center">
+                    <div className="relative mb-4">
+                      <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      <img
+                        src={game.logo}
+                        alt={`${game.title} logo`}
+                        className="relative w-20 h-20 object-contain mx-auto rounded-xl shadow-lg"
+                        onError={(e) => {
+                          e.target.src = "/default-logo.png";
+                        }}
+                      />
+                    </div>
+                    <h3 className="text-white font-semibold mb-4 text-sm leading-tight">{game.title}</h3>
+                    <button
+                      onClick={() => handleRemoveFavorite(game.id)}
+                      className="px-4 py-2 bg-gradient-to-r from-red-500 to-pink-600 text-white text-xs font-medium rounded-full hover:from-red-600 hover:to-pink-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                    >
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="text-8xl mb-6 opacity-50">🎮</div>
+              <h3 className="text-2xl font-bold text-white/80 mb-3">No tienes juegos favoritos</h3>
+              <p className="text-gray-400 text-lg mb-6">
+                Descubre nuevos juegos y marca tus favoritos
+              </p>
+              <div className="inline-block px-6 py-3 bg-gradient-to-r from-purple-600/50 to-pink-600/50 border border-white/20 rounded-full text-white/70 text-sm">
+                Ve a la sección de juegos para empezar
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
