@@ -62,18 +62,18 @@ export const Navbar = () => {
 
     {/* Menú */}
     <div className="flex items-center space-x-8 text-black font-semibold text-xl">
-      <Link to="/" className={`px-5 py-2 ${activeClass("/")}`}>Home</Link>
-      <Link to="/about" className={`px-5 py-2 ${activeClass("/about")}`}>About</Link>
-      <Link to="/contact" className={`px-5 py-2 ${activeClass("/contact")}`}>Contact</Link>
+      <Link to="/" className={`px-5 py-2 ${activeClass("/")}`}>Inicio</Link>
+      <Link to="/about" className={`px-5 py-2 ${activeClass("/about")}`}>Sobre Nosotros</Link>
+      <Link to="/contact" className={`px-5 py-2 ${activeClass("/contact")}`}>Contacto</Link>
 
       {!user ? (
         <>
-          <Link to="/login" className={`px-5 py-2 ${activeClass("/login")}`}>Login</Link>
-          <Link to="/register" className={`px-5 py-2 ${activeClass("/register")}`}>Register</Link>
+          <Link to="/login" className={`px-5 py-2 ${activeClass("/login")}`}>Iniciar Sesión</Link>
+          <Link to="/register" className={`px-5 py-2 ${activeClass("/register")}`}>Registrarse</Link>
         </>
       ) : (
         <>
-          <Link to="/games" className={`px-5 py-2 ${activeClass("/games")}`}>Games</Link>
+          <Link to="/games" className={`px-5 py-2 ${activeClass("/games")}`}>Juegos</Link>
 
           {/* Dropdown Perfil */}
           <div className="relative" ref={dropdownRef}>

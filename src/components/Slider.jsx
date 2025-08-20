@@ -2,10 +2,11 @@ import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const images = [
-  "https://picsum.photos/id/1018/800/400",
-  "https://picsum.photos/id/1015/800/400",
-  "https://picsum.photos/id/1019/800/400",
+  "/slider1.png",
+  "/slider2.png",
+  "/slider1.png",
 ];
+
 
 export const Slider=() => {
   const [current, setCurrent] = useState(0);
