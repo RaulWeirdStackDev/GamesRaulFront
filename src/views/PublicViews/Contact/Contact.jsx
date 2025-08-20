@@ -27,8 +27,8 @@ export const Contacto = () => {
   };
 
   return (
-    <div className="flex justify-center items-center mt-10 mb-10 min-h-[70vh] bg-gray-900">
-      <div className="w-full max-w-lg">
+    <div className="flex justify-center items-center min-h-[70vh] bg-gray-900">
+      <div className="w-full max-w-lg mb-4 mt-4">
         <h2 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
           Contáctame
         </h2>

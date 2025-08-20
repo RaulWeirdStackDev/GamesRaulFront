@@ -13,7 +13,7 @@ export const About = () => {
   const skills = [
     { icon: <FaHtml5 className="text-blue-500 text-4xl" />, name: "HTML5" },
     { icon: <FaCss3Alt className="text-blue-600 text-4xl" />, name: "CSS3" },
-    { icon: <FaJs className="text-gray-500 text-4xl" />, name: "JavaScript" },
+    { icon: <FaJs className="text-blue-500 text-4xl" />, name: "JavaScript" }, // Changed from text-gray-500 to text-blue-500
     { icon: <FaReact className="text-blue-500 text-4xl" />, name: "React" },
     { icon: <FaNodeJs className="text-blue-600 text-4xl" />, name: "Node.js" },
     { icon: <SiMongodb className="text-blue-600 text-4xl" />, name: "MongoDB" },
@@ -27,7 +27,7 @@ export const About = () => {
       ),
       name: "Phaser",
     },
-    { icon: <FaUnity className="text-gray-500 text-4xl" />, name: "Unity" },
+    { icon: <FaUnity className="text-blue-500 text-4xl" />, name: "Unity" }, // Changed from text-gray-500 to text-blue-500
     {
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" className="w-10 h-10">
@@ -41,7 +41,7 @@ export const About = () => {
   ];
 
   return (
-    <div className="w-screen max-w-screen overflow-x-hidden px-6 py-12 mt-8 bg-gray-900 text-white">
+    <div className="w-screen max-w-screen overflow-x-hidden px-6 py-12 bg-gray-900 text-white">
       {/* Foto + Descripción */}
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-16">
         <img
