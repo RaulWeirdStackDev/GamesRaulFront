@@ -1,7 +1,6 @@
-/* eslint-disable no-unused-vars */
 import { useState } from "react";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
 export const Login = () => {
@@ -34,14 +33,11 @@ export const Login = () => {
         return;
       }
 
-      // Guardar usuario en context y localStorage
       login(data.user);
-
       Swal.fire("¡Éxito!", `Bienvenido ${data.user.name}`, "success");
-
-      // Redirigir a /games
       navigate("/games", { replace: true });
 
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       Swal.fire("Error", "No se pudo conectar con el servidor", "error");
     }
@@ -89,7 +85,6 @@ export const Login = () => {
               >
                 Contraseña
               </label>
-
               <div className="relative w-full flex items-center">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -164,6 +159,17 @@ export const Login = () => {
                 />
               </svg>
             </button>
+
+            {/* Link a registro */}
+            <p className="mt-4 text-gray-600 text-center">
+              ¿No tienes una cuenta?{" "}
+              <Link
+                to="/register"
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Regístrate
+              </Link>
+            </p>
           </form>
         </div>
       </div>
