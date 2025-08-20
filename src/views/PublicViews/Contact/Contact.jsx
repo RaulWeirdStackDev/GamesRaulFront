@@ -16,11 +16,11 @@ export const Contacto = () => {
       )
       .then(
         () => {
-          alert("Message sent successfully");
+          alert("Mensaje enviado correctamente");
           form.current.reset();
         },
         (error) => {
-          alert("An error occurred while sending the message");
+          alert("Ocurrió un error al enviar el mensaje");
           console.error(error);
         }
       );
@@ -35,16 +35,16 @@ export const Contacto = () => {
           onSubmit={enviarEmail}
           className="p-6 border rounded-2xl shadow-lg bg-white"
         >
-          {/* Name */}
+          {/* Nombre */}
           <div className="mb-4">
             <label htmlFor="name" className="block text-sm font-semibold mb-1">
-              Name
+              Nombre
             </label>
             <input
               type="text"
               id="name"
-              name="user_name"
-              placeholder="Name"
+              name="name"
+              placeholder="Nombre"
               required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400"
             />
@@ -53,88 +53,88 @@ export const Contacto = () => {
           {/* Email */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-semibold mb-1">
-              Email
+              Correo electrónico
             </label>
             <input
               type="email"
               id="email"
-              name="user_email"
-              placeholder="Email"
+              name="email"
+              placeholder="Correo electrónico"
               required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400"
             />
           </div>
 
-          {/* Phone */}
+          {/* Teléfono */}
           <div className="mb-4">
             <label htmlFor="phone" className="block text-sm font-semibold mb-1">
-              Phone
+              Teléfono
             </label>
             <input
               type="tel"
               id="phone"
-              name="user_phone"
-              placeholder="Phone"
+              name="phone"
+              placeholder="Teléfono"
               required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400"
             />
           </div>
 
-          {/* Subject */}
+          {/* Asunto */}
           <div className="mb-4">
             <label
               htmlFor="subject"
               className="block text-sm font-semibold mb-1"
             >
-              Subject
+              Asunto
             </label>
             <select
               id="subject"
-              name="user_subject"
+              name="subject"
               defaultValue=""
               className="w-full px-3 py-2 border rounded-lg bg-white focus:outline-none focus:ring focus:ring-blue-400"
             >
               <option value="" disabled hidden>
-                How can I help you today?
+                ¿Cómo puedo ayudarte hoy?
               </option>
               <option value="FeedbackGame">
-                I’d like to give feedback about a game
+                Me gustaría dar feedback sobre un juego
               </option>
               <option value="BuyGame">
-                I’d like to purchase one of your games
+                Me gustaría comprar uno de tus juegos
               </option>
               <option value="CustomGame">
-                I’d like to request a custom game
+                Me gustaría solicitar un juego personalizado
               </option>
-              <option value="Other">Other</option>
+              <option value="Other">Otro</option>
             </select>
           </div>
 
-          {/* Message */}
+          {/* Mensaje */}
           <div className="mb-4">
             <label
               htmlFor="message"
               className="block text-sm font-semibold mb-1"
             >
-              Message
+              Mensaje
             </label>
             <textarea
               id="message"
               name="message"
               rows="4"
-              placeholder="Message"
+              placeholder="Escribe tu mensaje aquí"
               required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring focus:ring-blue-400"
             />
           </div>
 
-          {/* Button */}
+          {/* Botón */}
           <div>
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition"
             >
-              Send
+              Enviar
             </button>
           </div>
         </form>
