@@ -12,6 +12,7 @@ import { Footer } from "./components/Footer";
 import { Contacto } from "./views/PublicViews/Contact/Contact";
 import { Home } from "./views/PublicViews/Home/Home";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { About } from "./views/PublicViews/About/About";
 
 // Componente para rutas privadas
 const PrivateRoute = ({ children }) => {
@@ -48,6 +49,7 @@ function App() {
           {/* Rutas públicas accesibles siempre */}
           <Route path="/home" element={<Home />} />
           <Route path="/contact" element={<Contacto />} />
+          <Route path="/about" element={<About />} />
 
           {/* Rutas solo para invitados */}
           <Route
