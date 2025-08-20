@@ -57,8 +57,8 @@ export const ForgotPassword = () => {
         to_email: email,
         user_name: data.name || "Usuario",
         reset_link: `${import.meta.env.VITE_FRONTEND_URL || window.location.origin}/reset-password/${data.token}`,
-        from_name: "Tu Aplicación", // Personaliza esto
-        reply_to: "noreply@tuapp.com" // Personaliza esto
+        from_name: "Tu Aplicación",
+        reply_to: "noreply@tuapp.com"
       };
 
       await emailjs.send(
@@ -100,15 +100,15 @@ export const ForgotPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 px-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 px-4">
+      <div className="bg-white/10 backdrop-blur-xl p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-600/20">
         
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="mx-auto w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mb-4">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              className="h-8 w-8 text-blue-600" 
+              className="h-8 w-8 text-blue-400" 
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"
@@ -121,10 +121,10 @@ export const ForgotPassword = () => {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-2">
             Recuperar Contraseña
           </h1>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-300 text-sm">
             Ingresa tu correo electrónico y te enviaremos un link para restablecer tu contraseña.
           </p>
         </div>
@@ -134,7 +134,7 @@ export const ForgotPassword = () => {
           <div>
             <label 
               htmlFor="email" 
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Correo Electrónico
             </label>
@@ -145,7 +145,7 @@ export const ForgotPassword = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={loading}
-              className="w-full border border-gray-300 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:bg-gray-100 disabled:cursor-not-allowed"
+              className="w-full border border-gray-600/20 px-4 py-3 rounded-lg bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 disabled:bg-gray-600/20 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -154,8 +154,8 @@ export const ForgotPassword = () => {
             disabled={loading}
             className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all duration-200 flex items-center justify-center space-x-2 ${
               loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:shadow-lg"
+                ? "bg-gray-600/50 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-700 to-gray-700 hover:from-blue-800 hover:to-gray-800 focus:ring-2 focus:ring-blue-600/50 focus:ring-offset-2 hover:shadow-lg hover:shadow-blue-600/25"
             }`}
           >
             {loading ? (
@@ -206,11 +206,11 @@ export const ForgotPassword = () => {
 
         {/* Footer */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-300">
             ¿Recordaste tu contraseña?{" "}
             <Link
               to="/login"
-              className="text-blue-600 font-medium hover:text-blue-700 hover:underline transition-colors"
+              className="text-blue-400 font-medium hover:text-blue-300 hover:underline transition-colors"
             >
               Volver al login
             </Link>
@@ -218,8 +218,8 @@ export const ForgotPassword = () => {
         </div>
 
         {/* Info adicional */}
-        <div className="mt-4 p-3 bg-blue-50 rounded-lg">
-          <p className="text-xs text-blue-700 text-center">
+        <div className="mt-4 p-3 bg-blue-600/10 rounded-lg">
+          <p className="text-xs text-blue-400 text-center">
             💡 El link de recuperación expira en 30 minutos por seguridad
           </p>
         </div>

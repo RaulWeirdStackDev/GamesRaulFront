@@ -95,10 +95,10 @@ export const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-200">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
       <div className="flex flex-col items-center justify-center flex-grow p-4">
         {/* Header */}
-        <header className="bg-gradient-to-r from-[#FFD42A] to-orange-500 shadow-lg w-full max-w-md rounded-t-lg overflow-hidden">
+        <header className="bg-gradient-to-r from-blue-700 to-gray-700 shadow-lg w-full max-w-md rounded-t-lg overflow-hidden">
           <div className="flex justify-center py-2">
             <img src="/logo.png" className="h-28 drop-shadow-md" alt="logo" />
           </div>
@@ -107,13 +107,17 @@ export const Register = () => {
         {/* Form */}
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col items-center justify-center space-y-5 bg-white p-8 shadow-xl px-10 w-full max-w-md rounded-b-lg border border-gray-100"
+          className="flex flex-col items-center justify-center space-y-5 bg-white/10 backdrop-blur-xl p-8 shadow-xl px-10 w-full max-w-md rounded-b-lg border border-gray-600/20"
         >
+          <h2 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+            Registrarse
+          </h2>
+
           {/* Nombre */}
           <div className="flex flex-col w-full">
             <label
               htmlFor="nameInput"
-              className="mb-1 text-center font-medium text-gray-700"
+              className="mb-1 text-center font-medium text-white"
             >
               Nombre
             </label>
@@ -121,7 +125,7 @@ export const Register = () => {
               type="text"
               id="nameInput"
               name="nameInput"
-              className="border border-gray-300 p-3 rounded-lg text-center w-full focus:outline-none focus:border-blue-500 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-blue-500/30"
+              className="border border-gray-600/20 p-3 rounded-lg text-center w-full bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 ease-in-out"
               placeholder="💬 Juan Perez"
             />
           </div>
@@ -130,7 +134,7 @@ export const Register = () => {
           <div className="flex flex-col w-full">
             <label
               htmlFor="emailInput"
-              className="mb-1 text-center font-medium text-gray-700"
+              className="mb-1 text-center font-medium text-white"
             >
               Correo Electrónico
             </label>
@@ -138,7 +142,7 @@ export const Register = () => {
               type="email"
               id="emailInput"
               name="emailInput"
-              className="border border-gray-300 p-3 rounded-lg text-center w-full focus:outline-none focus:border-blue-500 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-blue-500/30"
+              className="border border-gray-600/20 p-3 rounded-lg text-center w-full bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 ease-in-out"
               placeholder="📧 correo@correo.com"
             />
           </div>
@@ -147,7 +151,7 @@ export const Register = () => {
           <div className="flex flex-col w-full">
             <label
               htmlFor="passwordInput"
-              className="mb-1 text-center font-medium text-gray-700"
+              className="mb-1 text-center font-medium text-white"
             >
               Contraseña
             </label>
@@ -156,13 +160,13 @@ export const Register = () => {
                 type={showPassword ? "text" : "password"}
                 id="passwordInput"
                 name="passwordInput"
-                className="border border-gray-300 p-3 rounded-lg text-center w-full focus:outline-none focus:border-blue-500 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-blue-500/30"
+                className="border border-gray-600/20 p-3 rounded-lg text-center w-full bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 ease-in-out"
                 placeholder="🔑 ******"
               />
               <button
                 type="button"
                 onClick={togglePassword}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 focus:outline-none"
               >
                 {showPassword ? (
                   <svg
@@ -209,7 +213,7 @@ export const Register = () => {
           <div className="flex flex-col w-full">
             <label
               htmlFor="confirmPasswordInput"
-              className="mb-1 text-center font-medium text-gray-700"
+              className="mb-1 text-center font-medium text-white"
             >
               Confirmar Contraseña
             </label>
@@ -218,13 +222,13 @@ export const Register = () => {
                 type={showConfirmPassword ? "text" : "password"}
                 id="confirmPasswordInput"
                 name="confirmPasswordInput"
-                className="border border-gray-300 p-3 rounded-lg text-center w-full focus:outline-none focus:border-blue-500 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-blue-500/30"
+                className="border border-gray-600/20 p-3 rounded-lg text-center w-full bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 ease-in-out"
                 placeholder="🔑 ******"
               />
               <button
                 type="button"
                 onClick={toggleConfirmPassword}
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-200 focus:outline-none"
               >
                 {showConfirmPassword ? (
                   <svg
@@ -269,15 +273,15 @@ export const Register = () => {
 
           <button
             type="submit"
-            className="mt-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 active:from-blue-700 active:to-blue-800 transition-all duration-300 ease-in-out hover:-translate-y-0.5 active:translate-y-px shadow-md hover:shadow-lg text-xl flex items-center justify-center"
+            className="mt-4 bg-gradient-to-r from-blue-700 to-gray-700 text-white px-8 py-3 rounded-lg hover:from-blue-800 hover:to-gray-800 active:from-blue-900 active:to-gray-900 transition-all duration-300 ease-in-out hover:-translate-y-0.5 active:translate-y-px shadow-lg hover:shadow-blue-600/25 text-xl flex items-center justify-center"
           >
             <span>Registrarse</span>
           </button>
-          <p className="mt-4 text-gray-600 text-center">
+          <p className="mt-4 text-gray-300 text-center">
             ¿Ya tienes una cuenta?{" "}
             <Link
               to="/login"
-              className="text-blue-600 font-semibold hover:underline"
+              className="text-blue-400 font-semibold hover:underline"
             >
               Inicia sesión
             </Link>

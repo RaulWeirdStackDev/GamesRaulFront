@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../../context/AuthContext"; // Ajusta la ruta según tu estructura
+import { useAuth } from "../../../context/AuthContext";
 
 export const Games = () => {
-  const { user } = useAuth(); // Obtener usuario actual
+  const { user } = useAuth();
   const [games, setGames] = useState([]);
   const [selected, setSelected] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [favorites, setFavorites] = useState([]); // IDs de juegos favoritos
-  const [favoriteLoading, setFavoriteLoading] = useState({}); // Loading por juego
+  const [favorites, setFavorites] = useState([]);
+  const [favoriteLoading, setFavoriteLoading] = useState({});
 
   useEffect(() => {
     const fetchGames = async () => {
@@ -25,7 +25,6 @@ export const Games = () => {
     fetchGames();
   }, []);
 
-  // Cargar favoritos del usuario
   useEffect(() => {
     const fetchFavorites = async () => {
       if (!user?.id) return;
@@ -55,7 +54,6 @@ export const Games = () => {
       const isFavorite = favorites.includes(gameId);
       
       if (isFavorite) {
-        // Eliminar de favoritos
         const response = await fetch(
           `http://localhost:3007/api/profile/${user.id}/favorites/${gameId}`,
           { method: "DELETE" }
@@ -65,7 +63,6 @@ export const Games = () => {
           setFavorites(prev => prev.filter(id => id !== gameId));
         }
       } else {
-        // Agregar a favoritos
         const response = await fetch(
           `http://localhost:3007/api/profile/${user.id}/favorites`,
           {
@@ -89,7 +86,7 @@ export const Games = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen text-xl font-medium">
+      <div className="flex items-center justify-center min-h-screen text-xl font-medium text-gray-300 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
         Cargando juegos...
       </div>
     );
@@ -97,7 +94,7 @@ export const Games = () => {
 
   if (!games.length) {
     return (
-      <div className="flex items-center justify-center min-h-screen text-xl font-medium">
+      <div className="flex items-center justify-center min-h-screen text-xl font-medium text-gray-300 bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
         No hay juegos disponibles.
       </div>
     );
@@ -106,17 +103,17 @@ export const Games = () => {
   const selectedGame = games[selected];
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 p-6 gap-6 min-h-screen">
+    <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-6 gap-6 min-h-screen">
       {/* Botones de selección con logos y corazones */}
       <div className="flex gap-6 flex-wrap justify-center">
         {games.map((game, index) => (
           <div key={game.id} className="relative">
             <button
               onClick={() => setSelected(index)}
-              className={`flex flex-col items-center justify-center px-4 py-2 rounded-xl shadow transition-transform hover:scale-105 ${
+              className={`flex flex-col items-center justify-center px-4 py-2 rounded-xl shadow-lg transition-transform hover:scale-105 ${
                 selected === index
-                  ? "bg-blue-600 text-white"
-                  : "bg-white text-gray-700 border"
+                  ? "bg-gradient-to-r from-blue-700 to-gray-700 text-white"
+                  : "bg-gray-800/50 text-gray-300 border border-gray-600/20"
               }`}
             >
               <img
@@ -136,15 +133,15 @@ export const Games = () => {
               disabled={favoriteLoading[game.id]}
               className={`absolute top-1 left-1 w-8 h-8 rounded-full flex items-center justify-center transition-all duration-200 ${
                 favoriteLoading[game.id]
-                  ? 'bg-gray-200 cursor-not-allowed'
+                  ? 'bg-gray-600/50 cursor-not-allowed'
                   : favorites.includes(game.id)
-                  ? 'bg-red-500 hover:bg-red-600 text-white shadow-md'
-                  : 'bg-white hover:bg-gray-50 text-gray-400 hover:text-red-500 shadow-md border'
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-md'
+                  : 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-blue-400 shadow-md border border-gray-600/20'
               }`}
               title={favorites.includes(game.id) ? "Quitar de favoritos" : "Agregar a favoritos"}
             >
               {favoriteLoading[game.id] ? (
-                <div className="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-gray-300/30 border-t-white rounded-full animate-spin"></div>
               ) : (
                 <svg 
                   className="w-4 h-4" 
@@ -166,7 +163,7 @@ export const Games = () => {
       </div>
 
       {/* Iframe del juego seleccionado */}
-      <div className="shadow-xl border rounded-2xl overflow-hidden bg-white">
+      <div className="shadow-xl border border-gray-600/20 rounded-2xl overflow-hidden bg-white/10 backdrop-blur-xl">
         <iframe
           src={selectedGame.src}
           title={selectedGame.title}
@@ -178,24 +175,26 @@ export const Games = () => {
       </div>
 
       {/* Descripción e instrucciones */}
-      <div className="bg-white shadow-xl rounded-2xl p-6 max-w-4xl w-full text-gray-800 text-center space-y-4">
+      <div className="bg-white/10 backdrop-blur-xl shadow-xl rounded-2xl p-6 max-w-4xl w-full text-gray-300 border border-gray-600/20 text-center space-y-4">
         <div className="flex items-center justify-center gap-3">
-          <h2 className="text-3xl font-bold">{selectedGame.title}</h2>
+          <h2 className="text-3xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+            {selectedGame.title}
+          </h2>
           {/* Corazón grande para el juego actual */}
           <button
             onClick={() => toggleFavorite(selectedGame.id)}
             disabled={favoriteLoading[selectedGame.id]}
             className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${
               favoriteLoading[selectedGame.id]
-                ? 'bg-gray-200 cursor-not-allowed'
+                ? 'bg-gray-600/50 cursor-not-allowed'
                 : favorites.includes(selectedGame.id)
-                ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg'
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-400 hover:text-red-500 shadow-md'
+                ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg'
+                : 'bg-gray-800/50 hover:bg-gray-700/50 text-gray-300 hover:text-blue-400 shadow-md border border-gray-600/20'
             }`}
-            title={favorites.includes(selectedGame.id) ? "Quitar de favoritos" : "Agregar a favoritos"}
+            title={favorites.includes(games.id) ? "Quitar de favoritos" : "Agregar a favoritos"}
           >
             {favoriteLoading[selectedGame.id] ? (
-              <div className="w-5 h-5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+              <div className="w-5 h-5 border-2 border-gray-300/30 border-t-white rounded-full animate-spin"></div>
             ) : (
               <svg 
                 className="w-5 h-5" 
@@ -215,18 +214,18 @@ export const Games = () => {
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-blue-600 mb-1">Descripción</h3>
-          <p className="text-gray-700">{selectedGame.description}</p>
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-1">Descripción</h3>
+          <p className="text-gray-300">{selectedGame.description}</p>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-blue-600 mb-1">Instrucciones</h3>
-          <p className="text-gray-700">{selectedGame.instructions}</p>
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-1">Instrucciones</h3>
+          <p className="text-gray-300">{selectedGame.instructions}</p>
         </div>
 
         <div>
-          <h3 className="text-xl font-semibold text-blue-600 mb-1">Tecnologías</h3>
-          <p className="text-gray-700 font-medium">{selectedGame.technologies}</p>
+          <h3 className="text-xl font-semibold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-1">Tecnologías</h3>
+          <p className="text-gray-300 font-medium">{selectedGame.technologies}</p>
         </div>
       </div>
     </div>

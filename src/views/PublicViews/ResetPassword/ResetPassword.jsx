@@ -52,10 +52,10 @@ export const ResetPassword = () => {
 
   const getPasswordStrength = (pwd) => {
     if (pwd.length === 0) return { strength: 0, text: "", color: "" };
-    if (pwd.length < 6) return { strength: 1, text: "Muy débil", color: "text-red-600" };
-    if (pwd.length < 8) return { strength: 2, text: "Débil", color: "text-orange-600" };
-    if (!validatePassword(pwd)) return { strength: 3, text: "Regular", color: "text-yellow-600" };
-    return { strength: 4, text: "Fuerte", color: "text-green-600" };
+    if (pwd.length < 6) return { strength: 1, text: "Muy débil", color: "text-blue-600" };
+    if (pwd.length < 8) return { strength: 2, text: "Débil", color: "text-blue-500" };
+    if (!validatePassword(pwd)) return { strength: 3, text: "Regular", color: "text-blue-400" };
+    return { strength: 4, text: "Fuerte", color: "text-blue-300" };
   };
 
   const passwordStrength = getPasswordStrength(password);
@@ -120,10 +120,10 @@ export const ResetPassword = () => {
   // Mostrar loading mientras valida el token
   if (tokenValid === null) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200">
-        <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
+        <div className="bg-white/10 backdrop-blur-xl p-8 rounded-lg shadow-lg flex flex-col items-center">
           <svg 
-            className="animate-spin h-8 w-8 text-blue-600 mb-4" 
+            className="animate-spin h-8 w-8 text-blue-400 mb-4" 
             xmlns="http://www.w3.org/2000/svg" 
             fill="none" 
             viewBox="0 0 24 24"
@@ -142,22 +142,22 @@ export const ResetPassword = () => {
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
             />
           </svg>
-          <p className="text-gray-600">Validando token...</p>
+          <p className="text-gray-300">Validando token...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-200 px-4">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 px-4">
+      <div className="bg-white/10 backdrop-blur-xl p-8 rounded-lg shadow-lg w-full max-w-md border border-gray-600/20">
         
         {/* Header */}
         <div className="text-center mb-6">
-          <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto w-16 h-16 bg-blue-600/20 rounded-full flex items-center justify-center mb-4">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              className="h-8 w-8 text-green-600" 
+              className="h-8 w-8 text-blue-400" 
               fill="none" 
               viewBox="0 0 24 24" 
               stroke="currentColor"
@@ -170,10 +170,10 @@ export const ResetPassword = () => {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-2">
             Restablecer Contraseña
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-300 text-sm">
             Ingresa tu nueva contraseña segura
           </p>
         </div>
@@ -185,7 +185,7 @@ export const ResetPassword = () => {
           <div>
             <label 
               htmlFor="password" 
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Nueva Contraseña
             </label>
@@ -197,12 +197,12 @@ export const ResetPassword = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 disabled={loading}
-                className="w-full border border-gray-300 px-4 py-3 pr-12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:bg-gray-100"
+                className="w-full border border-gray-600/20 px-4 py-3 pr-12 rounded-lg bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 disabled:bg-gray-600/20"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200 focus:outline-none"
               >
                 {showPassword ? (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -221,13 +221,13 @@ export const ResetPassword = () => {
             {password && (
               <div className="mt-2">
                 <div className="flex items-center space-x-2">
-                  <div className="flex-1 bg-gray-200 rounded-full h-2">
+                  <div className="flex-1 bg-gray-600/20 rounded-full h-2">
                     <div 
                       className={`h-2 rounded-full transition-all duration-300 ${
-                        passwordStrength.strength === 1 ? 'bg-red-500 w-1/4' :
-                        passwordStrength.strength === 2 ? 'bg-orange-500 w-2/4' :
-                        passwordStrength.strength === 3 ? 'bg-yellow-500 w-3/4' :
-                        passwordStrength.strength === 4 ? 'bg-green-500 w-full' : ''
+                        passwordStrength.strength === 1 ? 'bg-blue-600 w-1/4' :
+                        passwordStrength.strength === 2 ? 'bg-blue-500 w-2/4' :
+                        passwordStrength.strength === 3 ? 'bg-blue-400 w-3/4' :
+                        passwordStrength.strength === 4 ? 'bg-blue-300 w-full' : ''
                       }`}
                     />
                   </div>
@@ -243,7 +243,7 @@ export const ResetPassword = () => {
           <div>
             <label 
               htmlFor="confirmPassword" 
-              className="block text-sm font-medium text-gray-700 mb-2"
+              className="block text-sm font-medium text-white mb-2"
             >
               Confirmar Nueva Contraseña
             </label>
@@ -255,12 +255,12 @@ export const ResetPassword = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 disabled={loading}
-                className="w-full border border-gray-300 px-4 py-3 pr-12 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 disabled:bg-gray-100"
+                className="w-full border border-gray-600/20 px-4 py-3 pr-12 rounded-lg bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 disabled:bg-gray-600/20"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-200 focus:outline-none"
               >
                 {showConfirmPassword ? (
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -279,7 +279,7 @@ export const ResetPassword = () => {
             {confirmPassword && (
               <div className="mt-2 flex items-center">
                 {password === confirmPassword ? (
-                  <div className="flex items-center text-green-600">
+                  <div className="flex items-center text-blue-400">
                     <svg className="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                     </svg>
@@ -298,18 +298,18 @@ export const ResetPassword = () => {
           </div>
 
           {/* Requisitos de contraseña */}
-          <div className="bg-gray-50 p-3 rounded-lg">
-            <p className="text-xs text-gray-600 font-medium mb-2">Requisitos de contraseña:</p>
-            <ul className="text-xs text-gray-600 space-y-1">
-              <li className={`flex items-center ${password.length >= 8 ? 'text-green-600' : ''}`}>
+          <div className="bg-blue-600/10 p-3 rounded-lg">
+            <p className="text-xs text-blue-400 font-medium mb-2">Requisitos de contraseña:</p>
+            <ul className="text-xs text-blue-400 space-y-1">
+              <li className={`flex items-center ${password.length >= 8 ? 'text-blue-300' : ''}`}>
                 <span className="mr-2">{password.length >= 8 ? '✓' : '•'}</span>
                 Mínimo 8 caracteres
               </li>
-              <li className={`flex items-center ${/[A-Za-z]/.test(password) ? 'text-green-600' : ''}`}>
+              <li className={`flex items-center ${/[A-Za-z]/.test(password) ? 'text-blue-300' : ''}`}>
                 <span className="mr-2">{/[A-Za-z]/.test(password) ? '✓' : '•'}</span>
                 Al menos una letra
               </li>
-              <li className={`flex items-center ${/\d/.test(password) ? 'text-green-600' : ''}`}>
+              <li className={`flex items-center ${/\d/.test(password) ? 'text-blue-300' : ''}`}>
                 <span className="mr-2">{/\d/.test(password) ? '✓' : '•'}</span>
                 Al menos un número
               </li>
@@ -322,8 +322,8 @@ export const ResetPassword = () => {
             disabled={loading}
             className={`w-full py-3 px-4 rounded-lg font-medium text-white transition-all duration-200 flex items-center justify-center space-x-2 ${
               loading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-green-600 hover:bg-green-700 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 hover:shadow-lg"
+                ? "bg-gray-600/50 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-700 to-gray-700 hover:from-blue-800 hover:to-gray-800 focus:ring-2 focus:ring-blue-600/50 focus:ring-offset-2 hover:shadow-lg hover:shadow-blue-600/25"
             }`}
           >
             {loading ? (
@@ -374,11 +374,11 @@ export const ResetPassword = () => {
 
         {/* Footer */}
         <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-300">
             ¿Recordaste tu contraseña?{" "}
             <Link
               to="/login"
-              className="text-blue-600 font-medium hover:text-blue-700 hover:underline transition-colors"
+              className="text-blue-400 font-medium hover:text-blue-300 hover:underline transition-colors"
             >
               Volver al login
             </Link>

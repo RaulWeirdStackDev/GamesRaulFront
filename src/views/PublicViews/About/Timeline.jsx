@@ -1,4 +1,3 @@
-// Timeline.jsx
 import { motion } from "framer-motion";
 
 export const Timeline = () => {
@@ -53,24 +52,24 @@ export const Timeline = () => {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      <h2 className="text-2xl font-semibold mb-6 text-center">
+    <div className="max-w-6xl mx-auto px-6 py-12 bg-gray-900">
+      <h2 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
         Mi Camino como Desarrollador Web y de Videojuegos
       </h2>
       <div className="space-y-8">
         {events.map((event, index) => (
           <motion.div
             key={index}
-            className={`p-4 border-l-4 bg-white rounded shadow ${
-              index % 2 === 0 ? "border-blue-600" : "border-green-600"
+            className={`p-4 border-l-4 bg-white/10 backdrop-blur-xl rounded-lg shadow-lg hover:shadow-blue-600/25 ${
+              index % 2 === 0 ? "border-blue-600/30" : "border-gray-600/30"
             }`}
             initial={{ x: index % 2 === 0 ? -100 : 100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <h3 className="font-semibold">{event.year}</h3>
+            <h3 className="font-semibold text-white">{event.year}</h3>
             {event.details.map((detail, i) => (
-              <p key={i}>{detail}</p>
+              <p key={i} className="text-gray-300">{detail}</p>
             ))}
           </motion.div>
         ))}

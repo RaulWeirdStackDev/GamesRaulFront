@@ -48,11 +48,11 @@ export const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-50 to-gray-200">
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
       <div className="flex-1 flex items-center justify-center p-4">
         <div className="flex flex-col items-center w-full max-w-md">
           {/* Header */}
-          <header className="bg-gradient-to-r from-[#FFD42A] to-orange-500 shadow-lg w-full max-w-md rounded-t-lg overflow-hidden">
+          <header className="bg-gradient-to-r from-blue-700 to-gray-700 shadow-lg w-full max-w-md rounded-t-lg overflow-hidden">
             <div className="flex justify-center py-2">
               <img src="/logo.png" className="h-28 drop-shadow-md" alt="logo" />
             </div>
@@ -61,13 +61,17 @@ export const Login = () => {
           {/* Form */}
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col items-center space-y-5 bg-white p-8 shadow-xl px-10 w-full rounded-b-lg border border-gray-100"
+            className="flex flex-col items-center space-y-5 bg-white/10 backdrop-blur-xl p-8 shadow-xl px-10 w-full rounded-b-lg border border-gray-600/20"
           >
+            <h2 className="text-2xl font-semibold mb-6 text-center bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+              Iniciar Sesión
+            </h2>
+
             {/* Email */}
             <div className="flex flex-col w-full">
               <label
                 htmlFor="emailInput"
-                className="mb-1 font-medium text-gray-700 text-center"
+                className="mb-1 font-medium text-white text-center"
               >
                 Correo Electrónico
               </label>
@@ -76,7 +80,7 @@ export const Login = () => {
                 id="emailInput"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="border border-gray-300 p-3 rounded-lg w-full focus:outline-none focus:border-blue-500 transition-all duration-200 ease-in-out focus:ring-2 focus:ring-blue-500/30"
+                className="border border-gray-600/20 p-3 rounded-lg w-full bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 transition-all duration-200 ease-in-out"
                 placeholder="📧 correo@correo.com"
               />
             </div>
@@ -85,7 +89,7 @@ export const Login = () => {
             <div className="flex flex-col w-full">
               <label
                 htmlFor="passwordInput"
-                className="mb-1 font-medium text-gray-700 text-center"
+                className="mb-1 font-medium text-white text-center"
               >
                 Contraseña
               </label>
@@ -95,13 +99,13 @@ export const Login = () => {
                   id="passwordInput"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="flex-1 border border-gray-300 rounded-lg px-3 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 border border-gray-600/20 rounded-lg px-3 py-3 bg-gray-800/50 text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50"
                   placeholder="🔒 ******"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+                  className="absolute right-3 text-gray-400 hover:text-gray-200 focus:outline-none"
                 >
                   {showPassword ? (
                     <svg
@@ -147,7 +151,7 @@ export const Login = () => {
             {/* Submit Button */}
             <button
               type="submit"
-              className="mt-4 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-blue-700 active:from-blue-700 active:to-blue-800 transition-all duration-300 ease-in-out hover:-translate-y-0.5 active:translate-y-px shadow-md hover:shadow-lg text-xl flex items-center justify-center"
+              className="mt-4 bg-gradient-to-r from-blue-700 to-gray-700 text-white px-8 py-3 rounded-lg hover:from-blue-800 hover:to-gray-800 active:from-blue-900 active:to-gray-900 transition-all duration-300 ease-in-out hover:-translate-y-0.5 active:translate-y-px shadow-lg hover:shadow-blue-600/25 text-xl flex items-center justify-center"
             >
               <span>Iniciar Sesión</span>
               <svg
@@ -165,11 +169,11 @@ export const Login = () => {
             </button>
 
             {/* Link a registro */}
-            <p className="mt-4 text-gray-600 text-center">
+            <p className="mt-4 text-gray-300 text-center">
               ¿No tienes una cuenta?{" "}
               <Link
                 to="/register"
-                className="text-blue-600 font-semibold hover:underline"
+                className="text-blue-400 font-semibold hover:underline"
               >
                 Regístrate
               </Link>
@@ -177,7 +181,7 @@ export const Login = () => {
 
             {/* Link a recuperar contraseña */}
             <p
-              className="mt-2 text-blue-600 hover:underline cursor-pointer text-center"
+              className="mt-2 text-blue-400 hover:underline cursor-pointer text-center"
               onClick={handleForgotPassword}
             >
               ¿Olvidaste tu contraseña?
