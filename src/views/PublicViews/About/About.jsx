@@ -66,7 +66,7 @@ export const About = () => {
       <h2 className="text-2xl font-semibold mb-8 text-center bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
         Mi Stack Tecnológico
       </h2>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-10 text-center my-12">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-10 px-10 text-center my-12">
         {skills.map((skill, index) => (
           <div
             key={index}

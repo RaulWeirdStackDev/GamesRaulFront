@@ -82,7 +82,7 @@ export const Home = () => {
                     className="h-full object-contain transform group-hover:scale-110 transition-transform duration-500" 
                   />
                 </div>
-                <div className="p-8">
+                <div className="p-8 text-center">
                   <h3 className="font-bold text-2xl mb-4 text-white group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-gray-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                     Real Fighters
                   </h3>
@@ -115,7 +115,7 @@ export const Home = () => {
                     className="h-full object-contain transform group-hover:scale-110 transition-transform duration-500" 
                   />
                 </div>
-                <div className="p-8">
+                <div className="p-8 text-center">
                   <h3 className="font-bold text-2xl mb-4 text-white group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-gray-500 group-hover:bg-clip-text group-hover:text-transparent transition-all duration-300">
                     Out of Eden
                   </h3>
