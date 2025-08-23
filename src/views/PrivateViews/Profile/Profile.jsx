@@ -365,11 +365,11 @@ export const Profile = () => {
           </h2>
           
           {profile.favorites && profile.favorites.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="flex flex-wrap justify-center gap-6">
               {profile.favorites.map((game) => (
                 <div
                   key={game.id}
-                  className="group bg-white/10 backdrop-blur-sm border border-gray-600/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:shadow-blue-600/25"
+                  className="group bg-white/10 backdrop-blur-sm border border-gray-600/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:shadow-blue-600/25 w-64 flex-shrink-0"
                 >
                   <div className="text-center">
                     <div className="relative mb-4">
