@@ -8,7 +8,14 @@ export const GameFrame = ({ game }) => {
         frameBorder="0"
         scrolling="no"
         className="w-[640px] h-[400px] sm:w-[720px] sm:h-[450px] md:w-[800px] md:h-[500px] lg:w-[900px] lg:h-[560px] block"
-        style={{ border: "none", display: "block", overflow: "hidden" }}
+        style={{ 
+          border: "none", 
+          display: "block", 
+          overflow: "hidden",
+          margin: 0,
+          padding: 0,
+          verticalAlign: "top" // Elimina el espacio inferior por defecto de inline elements
+        }}
       />
     </div>
   );
