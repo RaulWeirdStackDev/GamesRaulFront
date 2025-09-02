@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
+ 
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { AuthProvider, useAuth } from "./context/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
 
 // Vistas
 import { Register } from "./views/PublicViews/Register/Register";
@@ -18,27 +18,7 @@ import { About } from "./views/PublicViews/About/About";
 import { ForgotPassword } from "./views/PublicViews/ForgotPassword/ForgotPassword";
 import { ResetPassword } from "./views/PublicViews/ResetPassword/ResetPassword";
 
-// Componente para rutas privadas
-const PrivateRoute = ({ children }) => {
-  const { user } = useAuth();
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  return children;
-};
-
-// Componente para rutas solo para invitados
-const GuestRoute = ({ children }) => {
-  const { user } = useAuth();
-
-  if (user) {
-    return <Navigate to="/games" replace />;
-  }
-
-  return children;
-};
 
 function App() {
   return (
@@ -59,17 +39,17 @@ function App() {
           <Route
             path="/login"
             element={
-              <GuestRoute>
+       
                 <Login />
-              </GuestRoute>
+
             }
           />
           <Route
             path="/register"
             element={
-              <GuestRoute>
+
                 <Register />
-              </GuestRoute>
+
             }
           />
 
@@ -77,17 +57,17 @@ function App() {
           <Route
             path="/forgot-password"
             element={
-              <GuestRoute>
+ 
                 <ForgotPassword />
-              </GuestRoute>
+   
             }
           />
           <Route
             path="/reset-password/:token"
             element={
-              <GuestRoute>
+
                 <ResetPassword />
-              </GuestRoute>
+
             }
           />
 
@@ -95,17 +75,17 @@ function App() {
           <Route
             path="/games"
             element={
-              <PrivateRoute>
+
                 <Games />
-              </PrivateRoute>
+
             }
           />
           <Route
             path="/profile/:userId"
             element={
-              <PrivateRoute>
+
                 <Profile />
-              </PrivateRoute>
+
             }
           />
 
