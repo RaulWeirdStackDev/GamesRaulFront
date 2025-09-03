@@ -72,7 +72,7 @@ export const Navbar = () => {
       <div className="relative flex items-center justify-between py-3 px-4 max-w-7xl mx-auto">
         {/* Logo */}
         <Link to="/" className="flex-shrink-0">
-          <img src="/logo.png" className="h-14 sm:h-20" alt="Logo" />
+          <img src="/logo.png" className="h-18 sm:h-20" alt="Logo" />
         </Link>
 
         {/* Texto central (oculto en móvil) */}

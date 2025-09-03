@@ -21,7 +21,7 @@ export const GameFrame = ({ game }) => {
       {/* Alerta SOLO para usuarios móviles */}
       {isMobile && (
         <div className="bg-amber-500/20 border-b border-amber-500/30 p-3 text-amber-200 text-sm text-center md:hidden">
-          💡 <strong>Tip:</strong> Para mejor experiencia, usa este juego en desktop o gira tu dispositivo
+          💡 <strong>Tip:</strong> Para mejor experiencia, usa este juego en un dispositivo de escritorio 💻
         </div>
       )}
 
