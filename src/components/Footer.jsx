@@ -3,39 +3,39 @@ import { Link } from "react-router-dom";
 export const Footer = () => {
   return (
     <footer className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white mt-auto">
-      {/* Background glow effect */}
+      {/* Background glow */}
       <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-gray-600/20"></div>
-      
-      <div className="relative max-w-7xl mx-auto px-4 py-12">
+
+      <div className="relative max-w-7xl mx-auto px-4 py-10 sm:py-12">
         {/* Contenido principal */}
-        <div className="bg-white/10 backdrop-blur-xl border border-gray-600/20 rounded-3xl p-8 mb-8">
-          <div className="flex flex-col lg:flex-row justify-between items-center gap-8">
+        <div className="bg-white/10 backdrop-blur-xl border border-gray-600/20 rounded-3xl p-6 sm:p-8 mb-8">
+          <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-10">
             
-            {/* Información del creador */}
-            <div className="text-center lg:text-left">
+            {/* Info creador */}
+            <div className="text-center lg:text-left max-w-sm">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-3">
                 <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-gray-500 rounded-full flex items-center justify-center">
                   <span className="text-gray-900 font-bold text-xl">R</span>
                 </div>
                 <div>
-                  <p className="text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
+                  <p className="text-lg sm:text-xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
                     Raúl Rodríguez Clavero
                   </p>
-                  <p className="text-gray-400 text-sm">Desarrollador Full Stack & Game Developer</p>
+                  <p className="text-gray-400 text-xs sm:text-sm">Desarrollador Full Stack & Game Developer</p>
                 </div>
               </div>
-              <p className="text-gray-300 text-sm max-w-xs">
+              <p className="text-gray-300 text-sm">
                 Creando experiencias gaming únicas.
               </p>
             </div>
 
             {/* Links rápidos */}
-            <div className="flex flex-col items-center gap-4">
-              <h3 className="text-white font-semibold text-lg mb-2">Navegación</h3>
-              <div className="flex flex-wrap justify-center gap-4 text-sm">
+            <div className="flex flex-col items-center lg:items-start gap-4">
+              <h3 className="text-white font-semibold text-base sm:text-lg">Navegación</h3>
+              <div className="flex flex-wrap justify-center gap-3 sm:gap-4 text-sm">
                 <Link 
                   to="/" 
-                  className="group flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-xl hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-gray-600/20 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-105"
+                  className="group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-xl hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-gray-600/20 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-105"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -44,7 +44,7 @@ export const Footer = () => {
                 </Link>
                 <Link 
                   to="/about" 
-                  className="group flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-xl hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-gray-600/20 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-105"
+                  className="group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-xl hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-gray-600/20 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-105"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -53,7 +53,7 @@ export const Footer = () => {
                 </Link>
                 <Link 
                   to="/contact" 
-                  className="group flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-xl hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-gray-600/20 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-105"
+                  className="group flex items-center gap-2 px-3 py-2 sm:px-4 sm:py-2 bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-xl hover:bg-gradient-to-r hover:from-blue-600/20 hover:to-gray-600/20 hover:border-blue-500/30 transition-all duration-300 transform hover:scale-105"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -64,9 +64,9 @@ export const Footer = () => {
             </div>
 
             {/* Contacto */}
-            <div className="text-center lg:text-right">
-              <h3 className="text-white font-semibold text-lg mb-4">¡Conecta Conmigo!</h3>
-              <div className="flex flex-col gap-3">
+            <div className="text-center lg:text-right max-w-xs w-full">
+              <h3 className="text-white font-semibold text-base sm:text-lg mb-3">¡Conecta Conmigo!</h3>
+              <div className="flex flex-col gap-3 w-full">
                 <a
                   href="https://wa.me/56972033734"
                   target="_blank"
@@ -103,25 +103,29 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Sección inferior con tecnologías */}
+        {/* Tecnologías + copyright */}
         <div className="bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-2xl p-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             {/* Tecnologías */}
-            <div className="flex flex-wrap justify-center md:justify-start gap-3">
-              <span className="px-3 py-1 bg-gradient-to-r from-blue-600/20 to-gray-600/20 border border-blue-500/30 rounded-full text-xs text-blue-300 font-medium">Unity</span>
-              <span className="px-3 py-1 bg-gradient-to-r from-blue-600/20 to-gray-600/20 border border-blue-500/30 rounded-full text-xs text-blue-300 font-medium">React</span>
-              <span className="px-3 py-1 bg-gradient-to-r from-blue-600/20 to-gray-600/20 border border-blue-500/30 rounded-full text-xs text-blue-300 font-medium">Phaser</span>
-              <span className="px-3 py-1 bg-gradient-to-r from-blue-600/20 to-gray-600/20 border border-blue-500/30 rounded-full text-xs text-blue-300 font-medium">Node.js</span>
+            <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3">
+              {["Unity", "React", "Phaser", "Node.js"].map((tech) => (
+                <span
+                  key={tech}
+                  className="px-3 py-1 bg-gradient-to-r from-blue-600/20 to-gray-600/20 border border-blue-500/30 rounded-full text-xs text-blue-300 font-medium"
+                >
+                  {tech}
+                </span>
+              ))}
             </div>
 
             {/* Copyright */}
             <div className="text-center">
-              <p className="text-gray-400 text-sm flex items-center gap-2">
+              <p className="text-gray-400 text-xs sm:text-sm flex items-center justify-center gap-2">
                 <span>© 2025 R-Gaming</span>
-                <div className="w-1 h-1 bg-gray-500 rounded-full"></div>
-                <span>Hecho con</span>
+                <div className="hidden sm:block w-1 h-1 bg-gray-500 rounded-full"></div>
+                <span className="hidden sm:inline">Hecho con</span>
                 <span className="text-blue-400 animate-pulse">❤️</span>
-                <span>en Chile</span>
+                <span className="hidden sm:inline">en Chile</span>
               </p>
             </div>
           </div>
