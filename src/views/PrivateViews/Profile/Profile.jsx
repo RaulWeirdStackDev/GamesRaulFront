@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 
 export const Profile = () => {
-  const { userId } = useParams();
-  const { user } = useAuth();
+  const { user, token } = useAuth(); // 👈 ahora traemos también el token del contexto
   const [profile, setProfile] = useState(null);
   const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState("");
@@ -14,24 +12,20 @@ export const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [selectedFileName, setSelectedFileName] = useState("Sube tu foto de perfil aquí");
 
-  console.log("userId desde params:", userId);
-  console.log("user actual:", user);
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        console.log("Fetching profile for userId:", userId);
-        const res = await fetch(`http://localhost:3007/api/profile/${userId}`);
-        console.log("Response status:", res.status);
+        const res = await fetch("http://localhost:3007/api/profile/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
 
-        if (!res.ok) {
-          throw new Error(`Error ${res.status}: ${res.statusText}`);
-        }
+        if (!res.ok) throw new Error(`Error ${res.status}: ${res.statusText}`);
 
         const data = await res.json();
-        console.log("Profile data received:", data);
 
-        // Obtener detalles de los juegos favoritos con logos si no están incluidos
+        // si los favoritos no traen logo, los completamos con la lista de juegos
         const favoriteIds = data.favorites?.map(fav => fav.id) || [];
         if (favoriteIds.length > 0 && !data.favorites[0].logo) {
           const gamesRes = await fetch("http://localhost:3007/api/games");
@@ -46,18 +40,16 @@ export const Profile = () => {
         setProfile(data);
         setBio(data.bio || "");
         setPhoto(data.photo || "");
-        setLoading(false);
       } catch (err) {
         console.error("Error fetching profile:", err);
         setMessage(`Error al cargar perfil: ${err.message}`);
+      } finally {
         setLoading(false);
       }
     };
 
-    if (userId) {
-      fetchProfile();
-    }
-  }, [userId]);
+    if (token) fetchProfile();
+  }, [token]);
 
   const compressImage = (file, maxWidth, maxHeight, quality) => {
     return new Promise((resolve, reject) => {
@@ -120,9 +112,6 @@ export const Profile = () => {
   };
 
   const handleUpdate = async () => {
-    console.log("Iniciando actualización...");
-    console.log("Datos a enviar:", { bio, photo: photo ? `${photo.slice(0, 30)}...` : "vacío" });
-
     if (photo && !photo.startsWith("data:image/")) {
       setMessage("❌ La imagen no es válida");
       return;
@@ -132,25 +121,17 @@ export const Profile = () => {
     setMessage("");
 
     try {
-      const res = await fetch(`http://localhost:3007/api/profile/${userId}`, {
+      const res = await fetch("http://localhost:3007/api/profile/me", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ bio, photo }),
       });
 
-      console.log("Update response status:", res.status);
-      console.log("Update response headers:", res.headers);
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        console.error("Error response:", errorText);
-        throw new Error(`Error ${res.status}: ${errorText}`);
-      }
-
+      if (!res.ok) throw new Error(`Error ${res.status}`);
       const updated = await res.json();
-      console.log("Profile updated successfully:", updated);
 
       setProfile(updated);
       setMessage("✅ Perfil actualizado correctamente");
@@ -170,8 +151,13 @@ export const Profile = () => {
   const handleRemoveFavorite = async (gameId) => {
     try {
       const res = await fetch(
-        `http://localhost:3007/api/profile/${userId}/favorites/${gameId}`,
-        { method: "DELETE" }
+        `http://localhost:3007/api/profile/favorites/${gameId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (!res.ok) throw new Error("Error al eliminar juego favorito");
@@ -208,28 +194,28 @@ export const Profile = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 py-12">
       <div className="max-w-6xl mx-auto px-4">
-        {/* Message Notification */}
+        {/* notificaciones */}
         {message && (
-          <div className={`fixed top-6 right-6 z-50 p-4 rounded-lg shadow-2xl transform transition-all duration-300 ${
-            message.includes("✅") 
-              ? "bg-gradient-to-r from-blue-600 to-blue-800 text-white" 
-              : "bg-gradient-to-r from-red-600 to-red-800 text-white"
-          }`}>
+          <div
+            className={`fixed top-6 right-6 z-50 p-4 rounded-lg shadow-2xl transform transition-all duration-300 ${
+              message.includes("✅")
+                ? "bg-gradient-to-r from-blue-600 to-blue-800 text-white"
+                : "bg-gradient-to-r from-red-600 to-red-800 text-white"
+            }`}
+          >
             <div className="flex items-center gap-2">
               <div className="text-xl">{message.includes("✅") ? "✅" : "❌"}</div>
-              <p className="font-medium">{message.replace(/[✅❌]/g, '').trim()}</p>
+              <p className="font-medium">{message.replace(/[✅❌]/g, "").trim()}</p>
             </div>
           </div>
         )}
 
-        {/* Profile Header */}
+        {/* Header */}
         <div className="relative">
-          {/* Background Glow */}
           <div className="absolute inset-0 bg-gradient-to-r from-blue-700/20 to-gray-700/20 rounded-3xl blur-3xl"></div>
-          
           <div className="relative bg-white/10 backdrop-blur-xl border border-gray-600/20 rounded-3xl p-8 mb-8">
             <div className="flex flex-col lg:flex-row items-center gap-8">
-              {/* Profile Image */}
+              {/* Imagen */}
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-700 to-gray-700 rounded-full blur-lg opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <img
@@ -242,7 +228,7 @@ export const Profile = () => {
                 />
               </div>
 
-              {/* Profile Info */}
+              {/* Info */}
               <div className="text-center lg:text-left flex-1">
                 {user?.username && (
                   <h1 className="text-4xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-4">
@@ -257,12 +243,7 @@ export const Profile = () => {
                     onClick={() => setIsEditing(true)}
                     className="group relative px-8 py-3 bg-gradient-to-r from-blue-700 to-gray-700 text-white font-semibold rounded-full shadow-lg hover:shadow-blue-600/25 transform hover:scale-105 transition-all duration-300"
                   >
-                    <span className="relative z-10 flex items-center gap-2">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                      </svg>
-                      Editar Perfil
-                    </span>
+                    Editar Perfil
                   </button>
                 )}
               </div>
@@ -270,14 +251,14 @@ export const Profile = () => {
           </div>
         </div>
 
-        {/* Edit Form */}
+        {/* Formulario de edición */}
         {isEditing && (
           <div className="bg-white/10 backdrop-blur-xl border border-gray-600/20 rounded-3xl p-8 mb-8">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent mb-6 text-center">
               Editar Perfil
             </h3>
-            
-            {/* Photo Upload */}
+
+            {/* Foto */}
             <div className="mb-6">
               <label className="block text-white text-sm font-medium mb-3">Foto de perfil</label>
               <div className="relative">
@@ -285,19 +266,6 @@ export const Profile = () => {
                   htmlFor="photo-upload"
                   className="group flex items-center justify-center w-full px-6 py-4 bg-gradient-to-r from-blue-700 to-gray-700 text-white rounded-xl hover:from-blue-800 hover:to-gray-800 cursor-pointer transition-all duration-300 shadow-lg hover:shadow-blue-600/25 transform hover:scale-[1.02]"
                 >
-                  <svg
-                    className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                    />
-                  </svg>
                   <span className="font-medium">{selectedFileName}</span>
                 </label>
                 <input
@@ -317,30 +285,19 @@ export const Profile = () => {
                 placeholder="Cuéntanos sobre ti..."
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                className="w-full p-4 bg-gray-800/50 border border-gray-600/20 rounded-xl text-gray-300 placeholder-gray-300/60 focus:outline-none focus:ring-2 focus:ring-blue-600/50 backdrop-blur-sm resize-none transition-all duration-300"
+                className="w-full p-4 bg-gray-800/50 border border-gray-600/20 rounded-xl text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600/50 resize-none"
                 rows="4"
               />
             </div>
 
-            {/* Buttons */}
+            {/* Botones */}
             <div className="flex gap-4 justify-center">
               <button
                 onClick={handleUpdate}
                 disabled={updating}
-                className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 shadow-lg ${
-                  updating 
-                    ? "bg-gray-600/50 cursor-not-allowed text-gray-300" 
-                    : "bg-gradient-to-r from-blue-700 to-gray-700 hover:from-blue-800 hover:to-gray-800 text-white transform hover:scale-105 hover:shadow-blue-600/25"
-                }`}
+                className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-blue-700 to-gray-700 text-white"
               >
-                {updating ? (
-                  <span className="flex items-center gap-2">
-                    <div className="w-4 h-4 border-2 border-gray-300/30 border-t-white rounded-full animate-spin"></div>
-                    Guardando...
-                  </span>
-                ) : (
-                  "Guardar Cambios"
-                )}
+                {updating ? "Guardando..." : "Guardar Cambios"}
               </button>
               <button
                 onClick={() => {
@@ -350,7 +307,7 @@ export const Profile = () => {
                   setSelectedFileName("Sube tu foto de perfil aquí");
                   setMessage("");
                 }}
-                className="px-8 py-3 rounded-xl bg-gray-800/50 border border-gray-600/20 text-white hover:bg-gray-700/50 font-semibold transition-all duration-300 shadow-lg hover:shadow-blue-600/25 transform hover:scale-105"
+                className="px-8 py-3 rounded-xl bg-gray-800/50 border border-gray-600/20 text-white"
               >
                 Cancelar
               </button>
@@ -358,35 +315,31 @@ export const Profile = () => {
           </div>
         )}
 
-        {/* Favorite Games */}
+        {/* Favoritos */}
         <div className="bg-white/10 backdrop-blur-xl border border-gray-600/20 rounded-3xl p-8">
           <h2 className="text-3xl font-bold text-center mb-8 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent">
             🎮 Juegos Favoritos
           </h2>
-          
           {profile.favorites && profile.favorites.length > 0 ? (
             <div className="flex flex-wrap justify-center gap-6">
               {profile.favorites.map((game) => (
                 <div
                   key={game.id}
-                  className="group bg-white/10 backdrop-blur-sm border border-gray-600/20 rounded-2xl p-6 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 hover:shadow-blue-600/25 w-64 flex-shrink-0"
+                  className="group bg-white/10 rounded-2xl p-6 w-64 flex-shrink-0 hover:scale-105 transition-all"
                 >
                   <div className="text-center">
-                    <div className="relative mb-4">
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-700/20 to-gray-700/20 rounded-xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      <img
-                        src={game.logo}
-                        alt={`${game.title} logo`}
-                        className="relative w-20 h-20 object-contain mx-auto rounded-xl shadow-lg"
-                        onError={(e) => {
-                          e.target.src = "/default-logo.png";
-                        }}
-                      />
-                    </div>
-                    <h3 className="text-white font-semibold mb-4 text-sm leading-tight">{game.title}</h3>
+                    <img
+                      src={game.logo}
+                      alt={`${game.title} logo`}
+                      className="w-20 h-20 object-contain mx-auto rounded-xl"
+                      onError={(e) => {
+                        e.target.src = "/default-logo.png";
+                      }}
+                    />
+                    <h3 className="text-white font-semibold mb-4 text-sm">{game.title}</h3>
                     <button
                       onClick={() => handleRemoveFavorite(game.id)}
-                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-xs font-medium rounded-full hover:from-blue-700 hover:to-blue-900 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-blue-600/25"
+                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-800 text-white text-xs rounded-full"
                     >
                       Eliminar
                     </button>
@@ -395,16 +348,7 @@ export const Profile = () => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-16">
-              <div className="text-8xl mb-6 opacity-50">🎮</div>
-              <h3 className="text-2xl font-bold text-white mb-3">No tienes juegos favoritos</h3>
-              <p className="text-gray-300 text-lg mb-6">
-                Descubre nuevos juegos y marca tus favoritos
-              </p>
-              <div className="inline-block px-6 py-3 bg-gradient-to-r from-blue-600/50 to-blue-800/50 border border-gray-600/20 rounded-full text-blue-400 text-sm">
-                Ve a la sección de juegos para empezar
-              </div>
-            </div>
+            <div className="text-center py-16 text-white">No tienes juegos favoritos</div>
           )}
         </div>
       </div>

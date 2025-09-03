@@ -1,13 +1,14 @@
 /* eslint-disable react-refresh/only-export-components */
 /* eslint-disable react/prop-types */
 
-import { createContext, useState, useEffect, useContext } from "react";
+import { createContext, useState, useEffect, useContext, useCallback, useMemo } from "react";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
+  const [isLoading, setIsLoading] = useState(true); // 👈 Nuevo: estado de carga
 
   useEffect(() => {
     // Revisar si ya había sesión guardada
@@ -15,29 +16,53 @@ export const AuthProvider = ({ children }) => {
     const storedToken = localStorage.getItem("token");
 
     if (storedUser && storedToken) {
-      setUser(JSON.parse(storedUser));
-      setToken(storedToken);
+      try {
+        setUser(JSON.parse(storedUser));
+        setToken(storedToken);
+      } catch (error) {
+        console.error("Error parsing stored user:", error);
+        // Limpiar datos corruptos
+        localStorage.removeItem("user");
+        localStorage.removeItem("token");
+      }
     }
+    setIsLoading(false); // 👈 Marcar como cargado
   }, []);
 
-  const login = (userData, tokenData) => {
+  const login = useCallback((userData, tokenData) => {
     localStorage.setItem("user", JSON.stringify(userData));
     localStorage.setItem("token", tokenData);
     setUser(userData);
     setToken(tokenData);
-  };
+  }, []);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     localStorage.removeItem("user");
+    localStorage.removeItem("token"); // 👈 Añadido: eliminar token también
     setUser(null);
     setToken(null);
-  };
+  }, []);
+
+  // 👈 Memoizar el valor del contexto para evitar re-renders innecesarios
+  const contextValue = useMemo(() => ({
+    user,
+    token,
+    login,
+    logout,
+    isLoading
+  }), [user, token, login, logout, isLoading]);
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
