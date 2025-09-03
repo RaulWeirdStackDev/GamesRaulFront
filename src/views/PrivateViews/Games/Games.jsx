@@ -22,24 +22,44 @@ export const Games = () => {
   const selectedGame = games[selected];
 
   return (
-    <div className="flex flex-col items-center justify-center bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 p-6 gap-6 min-h-screen">
-      <GameSelector 
-        games={games}
-        selectedIndex={selected}
-        onSelect={setSelected}
-        favorites={favorites}
-        favoriteLoading={favoriteLoading}
-        onToggleFavorite={toggleFavorite}
-      />
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900">
+      {/* Contenedor principal con padding responsivo */}
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        
+        {/* Layout principal - columna en móvil, puede ser diferente en desktop */}
+        <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
+          
+          {/* Selector de juegos */}
+          <div className="w-full">
+            <GameSelector 
+              games={games}
+              selectedIndex={selected}
+              onSelect={setSelected}
+              favorites={favorites}
+              favoriteLoading={favoriteLoading}
+              onToggleFavorite={toggleFavorite}
+            />
+          </div>
 
-      <GameFrame game={selectedGame} />
+          {/* GameFrame - Centrado */}
+          <div className="w-full flex justify-center">
+            <GameFrame game={selectedGame} />
+          </div>
 
-      <GameInfo
-        game={selectedGame}
-        isFavorite={favorites.includes(selectedGame.id)}
-        isLoading={favoriteLoading[selectedGame.id]}
-        onToggleFavorite={toggleFavorite}
-      />
+          {/* GameInfo - Siempre debajo del frame */}
+          <div className="w-full flex justify-center">
+            <div className="w-full max-w-2xl">
+              <GameInfo
+                game={selectedGame}
+                isFavorite={favorites.includes(selectedGame.id)}
+                isLoading={favoriteLoading[selectedGame.id]}
+                onToggleFavorite={toggleFavorite}
+              />
+            </div>
+          </div>
+          
+        </div>
+      </div>
     </div>
   );
 };
