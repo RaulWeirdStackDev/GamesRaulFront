@@ -2,17 +2,25 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../../../context/AuthContext";
 
 export const useFavorites = () => {
-  const { user } = useAuth();
+   
+  const {  token } = useAuth();
   const [favorites, setFavorites] = useState([]);
   const [favoriteLoading, setFavoriteLoading] = useState({});
 
   useEffect(() => {
     const fetchFavorites = async () => {
-      if (!user?.id) return;
-      
+      if (!token) return;
+
       try {
-        const response = await fetch(`http://localhost:3007/api/profile/${user.id}`);
-        const data = await response.json();
+        const res = await fetch("http://localhost:3007/api/profile/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+
+        const data = await res.json();
         const favoriteIds = data.favorites?.map(fav => fav.id) || [];
         setFavorites(favoriteIds);
       } catch (error) {
@@ -21,10 +29,10 @@ export const useFavorites = () => {
     };
 
     fetchFavorites();
-  }, [user]);
+  }, [token]);
 
   const toggleFavorite = async (gameId) => {
-    if (!user?.id) {
+    if (!token) {
       alert("Debes iniciar sesión para agregar favoritos");
       return;
     }
@@ -33,29 +41,33 @@ export const useFavorites = () => {
 
     try {
       const isFavorite = favorites.includes(gameId);
-      
+
       if (isFavorite) {
-        const response = await fetch(
-          `http://localhost:3007/api/profile/${user.id}/favorites/${gameId}`,
-          { method: "DELETE" }
-        );
-        
-        if (response.ok) {
-          setFavorites(prev => prev.filter(id => id !== gameId));
-        }
-      } else {
-        const response = await fetch(
-          `http://localhost:3007/api/profile/${user.id}/favorites`,
+        const res = await fetch(
+          `http://localhost:3007/api/profile/me/favorites/${gameId}`,
           {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ gameId })
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
         );
-        
-        if (response.ok) {
-          setFavorites(prev => [...prev, gameId]);
-        }
+
+        if (res.ok) setFavorites(prev => prev.filter(id => id !== gameId));
+      } else {
+        const res = await fetch(
+          `http://localhost:3007/api/profile/me/favorites`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ gameId }),
+          }
+        );
+
+        if (res.ok) setFavorites(prev => [...prev, gameId]);
       }
     } catch (error) {
       console.error("Error al actualizar favorito:", error);

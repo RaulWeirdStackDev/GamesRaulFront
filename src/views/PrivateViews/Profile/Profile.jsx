@@ -148,30 +148,36 @@ export const Profile = () => {
     }
   };
 
-  const handleRemoveFavorite = async (gameId) => {
-    try {
-      const res = await fetch(
-        `http://localhost:3007/api/profile/favorites/${gameId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+// Solo mostrando la función handleRemoveFavorite corregida:
 
-      if (!res.ok) throw new Error("Error al eliminar juego favorito");
+const handleRemoveFavorite = async (gameId) => {
+  try {
+    const res = await fetch(
+      `http://localhost:3007/api/profile/me/favorites/${gameId}`, // 👈 CAMBIO: Añadido "/me"
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-      setProfile((prev) => ({
-        ...prev,
-        favorites: prev.favorites.filter((g) => g.id !== gameId),
-      }));
-      setMessage("✅ Juego eliminado de favoritos");
-    } catch (err) {
-      console.error("Error removing favorite:", err);
-      setMessage(`❌ Error: ${err.message}`);
-    }
-  };
+    if (!res.ok) throw new Error("Error al eliminar juego favorito");
+
+    setProfile((prev) => ({
+      ...prev,
+      favorites: prev.favorites.filter((g) => g.id !== gameId),
+    }));
+    setMessage("✅ Juego eliminado de favoritos");
+    
+    // 👈 OPCIONAL: Limpiar el mensaje después de unos segundos
+    setTimeout(() => setMessage(""), 3000);
+  } catch (err) {
+    console.error("Error removing favorite:", err);
+    setMessage(`❌ Error: ${err.message}`);
+  }
+};
+
 
   if (loading) return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 flex items-center justify-center">
