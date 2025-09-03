@@ -33,7 +33,7 @@ export const Login = () => {
         return;
       }
 
-      login(data.user);
+      login(data.user, data.token);
       Swal.fire("¡Éxito!", `Bienvenido ${data.user.name}`, "success");
       navigate("/games", { replace: true });
     // eslint-disable-next-line no-unused-vars
