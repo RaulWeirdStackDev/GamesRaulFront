@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 
 export const Footer = () => {
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white mt-auto">
+    <footer className="relative bg-gradient-to-br from-gray-900 via-blue-900 to-gray-900 text-white mt-auto mb-0">
       {/* Background glow */}
       <div className="absolute inset-0 bg-gradient-to-t from-blue-600/20 to-gray-600/20"></div>
 
-      <div className="relative max-w-7xl mx-auto px-4 py-10 sm:py-12">
+      <div className="relative max-w-7xl mx-auto px-4 py-10 sm:py-12 pb-0">
         {/* Contenido principal */}
         <div className="bg-white/10 backdrop-blur-xl border border-gray-600/20 rounded-3xl p-6 sm:p-8 mb-8">
           <div className="flex flex-col lg:flex-row justify-between items-center lg:items-start gap-10">
@@ -103,8 +103,8 @@ export const Footer = () => {
           </div>
         </div>
 
-        {/* Tecnologías + copyright */}
-        <div className="bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-2xl p-6">
+        {/* Tecnologías + copyright - Sin margen inferior */}
+        <div className="bg-white/5 backdrop-blur-sm border border-gray-600/20 rounded-2xl p-6 mb-0">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             {/* Tecnologías */}
             <div className="flex flex-wrap justify-center md:justify-start gap-2 sm:gap-3">
