@@ -59,6 +59,14 @@ export const Navbar = () => {
       : "relative text-gray-300 hover:text-white hover:bg-gray-800/10 hover:scale-105 hover:shadow-lg font-semibold px-6 py-2 mx-1 rounded-xl transition-all duration-300 backdrop-blur-sm";
   };
 
+  // 👈 Nueva función para estilos específicos del menú móvil
+  const mobileActiveClass = (path) => {
+    const currentPath = location.pathname === "/" ? "/home" : location.pathname;
+    return currentPath === path
+      ? "block w-full bg-gradient-to-r from-blue-700 to-gray-700 text-white shadow-lg font-bold px-4 py-3 rounded-xl transition-all duration-300 text-center"
+      : "block w-full text-gray-300 hover:text-white hover:bg-gray-800/30 font-semibold px-4 py-3 rounded-xl transition-all duration-300 backdrop-blur-sm text-center";
+  };
+
   return (
     <nav className="bg-gray-900/95 backdrop-blur-xl border-b border-gray-600/20 shadow-2xl relative z-50">
       <div className="relative flex items-center justify-between py-3 px-4 max-w-7xl mx-auto">
@@ -138,30 +146,63 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Menú móvil */}
+      {/* Menú móvil - 👈 MEJORADO */}
       {mobileOpen && (
-        <div className="md:hidden bg-gray-900/95 backdrop-blur-xl border-t border-gray-600/20 shadow-xl px-4 py-3 space-y-2">
-          <Link to="/home" className={activeClass("/home")} onClick={() => setMobileOpen(false)}>Inicio</Link>
-          <Link to="/about" className={activeClass("/about")} onClick={() => setMobileOpen(false)}>Sobre Mí</Link>
-          <Link to="/contact" className={activeClass("/contact")} onClick={() => setMobileOpen(false)}>Contacto</Link>
+        <div className="md:hidden bg-gray-900/95 backdrop-blur-xl border-t border-gray-600/20 shadow-xl px-4 py-4">
+          <div className="space-y-3">
+            <Link to="/home" className={mobileActiveClass("/home")} onClick={() => setMobileOpen(false)}>
+              Inicio
+            </Link>
+            <Link to="/about" className={mobileActiveClass("/about")} onClick={() => setMobileOpen(false)}>
+              Sobre Mí
+            </Link>
+            <Link to="/contact" className={mobileActiveClass("/contact")} onClick={() => setMobileOpen(false)}>
+              Contacto
+            </Link>
 
-          {!user ? (
-            <>
-              <Link to="/login" className={activeClass("/login")} onClick={() => setMobileOpen(false)}>Iniciar Sesión</Link>
-              <Link to="/register" className={activeClass("/register")} onClick={() => setMobileOpen(false)}>Registrarse</Link>
-            </>
-          ) : (
-            <>
-              <Link to="/games" className={activeClass("/games")} onClick={() => setMobileOpen(false)}>Juegos</Link>
-              <Link to="/profile" className={activeClass("/profile")} onClick={() => setMobileOpen(false)}>Mi Perfil</Link>
-              <button
-                onClick={() => { handleLogout(); setMobileOpen(false); }}
-                className="w-full text-left text-red-400 hover:bg-red-500/10 px-4 py-2 rounded-xl"
-              >
-                Cerrar Sesión
-              </button>
-            </>
-          )}
+            {!user ? (
+              <>
+                <Link to="/login" className={mobileActiveClass("/login")} onClick={() => setMobileOpen(false)}>
+                  Iniciar Sesión
+                </Link>
+                <Link to="/register" className={mobileActiveClass("/register")} onClick={() => setMobileOpen(false)}>
+                  Registrarse
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link to="/games" className={mobileActiveClass("/games")} onClick={() => setMobileOpen(false)}>
+                  Juegos
+                </Link>
+                
+                {/* Perfil con información del usuario en móvil */}
+                <div className="border-t border-gray-600/30 pt-3 mt-3">
+                  <div className="flex items-center justify-center space-x-3 mb-3 px-4 py-2">
+                    <img
+                      src={profilePhoto || "/default-avatar.png"}
+                      alt="Profile"
+                      className="w-8 h-8 rounded-full object-cover border-2 border-blue-600/30"
+                      onError={(e) => { e.target.src = "/default-avatar.png"; }}
+                    />
+                    <span className="font-semibold text-white text-sm">
+                      {user?.username || user?.name}
+                    </span>
+                  </div>
+                  
+                  <Link to="/profile" className={mobileActiveClass("/profile")} onClick={() => setMobileOpen(false)}>
+                    Mi Perfil
+                  </Link>
+                  
+                  <button
+                    onClick={() => { handleLogout(); setMobileOpen(false); }}
+                    className="block w-full text-red-400 hover:bg-red-500/20 hover:text-red-300 font-semibold px-4 py-3 rounded-xl transition-all duration-300 text-center mt-3"
+                  >
+                    Cerrar Sesión
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
         </div>
       )}
     </nav>
