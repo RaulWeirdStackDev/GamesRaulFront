@@ -74,6 +74,7 @@ export const AuthProvider = ({ children }) => {
   const handleTokenExpiration = useCallback(() => {
     clearAuthData();
     // Opcional: mostrar mensaje al usuario
+    // import Swal from "sweetalert2";
     // Swal.fire("Sesión expirada", "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.", "warning");
   }, [clearAuthData]);
 

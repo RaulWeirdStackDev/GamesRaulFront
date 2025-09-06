@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import { apiRequest } from "../utils/apiClient"; // ✅ Ruta corregida
 
 export const Navbar = () => {
-  const { user, token, logout, handleTokenExpiration } = useAuth(); // ✅ Agregar handleTokenExpiration
+  const { user, token, logout, handleTokenExpiration } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const [profileOpen, setProfileOpen] = useState(false);
@@ -13,10 +13,18 @@ export const Navbar = () => {
   const [profilePhoto, setProfilePhoto] = useState("");
   const dropdownRef = useRef(null);
 
+  // Debug: Log cuando cambie el user
+  useEffect(() => {
+    console.log("👤 Navbar - User cambió:", user ? `Logueado: ${user.name}` : "No logueado");
+  }, [user]);
+
   // ✅ Obtener foto de perfil con manejo de token expirado
   useEffect(() => {
     const fetchProfilePhoto = async () => {
-      if (!token) return;
+      if (!token || !user) { // ✅ Verificar tanto token como user
+        setProfilePhoto(""); // ✅ Limpiar foto si no hay usuario
+        return;
+      }
       
       try {
         const response = await apiRequest(
@@ -45,7 +53,7 @@ export const Navbar = () => {
     };
 
     fetchProfilePhoto();
-  }, [token, handleTokenExpiration]); // ✅ Agregar handleTokenExpiration a dependencias
+  }, [token, user, handleTokenExpiration]); // ✅ Agregar user a dependencias
 
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
