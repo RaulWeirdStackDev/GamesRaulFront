@@ -111,16 +111,16 @@ export const Contacto = () => {
               <option value="" disabled hidden>
                 ¿Cómo puedo ayudarte hoy?
               </option>
-              <option value="FeedbackGame">
+              <option value="Feedback de un juego">
                 Me gustaría dar feedback sobre un juego
               </option>
-              <option value="BuyGame">
+              <option value="Compra de un juego">
                 Me gustaría comprar uno de tus juegos
               </option>
-              <option value="CustomGame">
+              <option value="Juego personalizado">
                 Me gustaría solicitar un juego personalizado
               </option>
-              <option value="Other">Otro</option>
+              <option value="Otro">Otro</option>
             </select>
           </div>
 
