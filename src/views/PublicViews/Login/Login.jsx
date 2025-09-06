@@ -2,9 +2,10 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
+import { apiRequest } from "../../../utils/apiClient"; // ✅ Importar apiClient
 
 export const Login = () => {
-  const { login } = useAuth();
+  const { login, handleTokenExpiration } = useAuth(); // ✅ Agregar handleTokenExpiration
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -20,11 +21,15 @@ export const Login = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3007/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+      // ✅ Usar apiRequest en lugar de fetch directo
+      const response = await apiRequest(
+        "http://localhost:3007/api/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+        },
+        null // No necesitamos handleTokenExpiration en login ya que aún no tenemos token
+      );
 
       const data = await response.json();
 

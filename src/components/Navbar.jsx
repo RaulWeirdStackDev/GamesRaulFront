@@ -1,38 +1,51 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext"; // ✅ Ruta corregida
 import { useState, useEffect, useRef } from "react";
-import { Menu, X } from "lucide-react"; // 👈 iconos para móvil
+import { Menu, X } from "lucide-react";
+import { apiRequest } from "../utils/apiClient"; // ✅ Ruta corregida
 
 export const Navbar = () => {
-  const { user, token, logout } = useAuth();
+  const { user, token, logout, handleTokenExpiration } = useAuth(); // ✅ Agregar handleTokenExpiration
   const navigate = useNavigate();
   const location = useLocation();
   const [profileOpen, setProfileOpen] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false); // 👈 estado para menú móvil
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState("");
   const dropdownRef = useRef(null);
 
-  // Obtener foto de perfil
+  // ✅ Obtener foto de perfil con manejo de token expirado
   useEffect(() => {
     const fetchProfilePhoto = async () => {
       if (!token) return;
+      
       try {
-        const res = await fetch("http://localhost:3007/api/profile/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        if (!res.ok) {
+        const response = await apiRequest(
+          "http://localhost:3007/api/profile/me",
+          {
+            method: "GET"
+          },
+          handleTokenExpiration // ✅ Pasar la función para manejar expiración
+        );
+
+        if (!response.ok) {
+          // Si es 401/403, apiRequest ya manejó la expiración
+          if (response.status === 401 || response.status === 403) {
+            return; // No hacer nada más, el token ya se limpió
+          }
           setProfilePhoto("");
           return;
         }
-        const data = await res.json();
+
+        const data = await response.json();
         setProfilePhoto(data.photo || "");
       } catch (err) {
         console.error("Error fetching profile photo:", err);
         setProfilePhoto("");
       }
     };
+
     fetchProfilePhoto();
-  }, [token]);
+  }, [token, handleTokenExpiration]); // ✅ Agregar handleTokenExpiration a dependencias
 
   // Cerrar dropdown al hacer click fuera
   useEffect(() => {
@@ -59,7 +72,6 @@ export const Navbar = () => {
       : "relative text-gray-300 hover:text-white hover:bg-gray-800/10 hover:scale-105 hover:shadow-lg font-semibold px-6 py-2 mx-1 rounded-xl transition-all duration-300 backdrop-blur-sm";
   };
 
-  // 👈 Nueva función para estilos específicos del menú móvil
   const mobileActiveClass = (path) => {
     const currentPath = location.pathname === "/" ? "/home" : location.pathname;
     return currentPath === path
@@ -146,7 +158,7 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Menú móvil - 👈 MEJORADO */}
+      {/* Menú móvil */}
       {mobileOpen && (
         <div className="md:hidden bg-gray-900/95 backdrop-blur-xl border-t border-gray-600/20 shadow-xl px-4 py-4">
           <div className="space-y-3">

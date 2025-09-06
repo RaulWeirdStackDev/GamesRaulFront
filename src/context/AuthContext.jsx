@@ -8,26 +8,56 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // 👈 Nuevo: estado de carga
+  const [isLoading, setIsLoading] = useState(true);
+
+  // ✅ Función para limpiar datos de autenticación
+  const clearAuthData = useCallback(() => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setUser(null);
+    setToken(null);
+  }, []);
+
+  // ✅ Función para verificar si el token es válido
+  const verifyToken = useCallback(async (tokenToVerify) => {
+    try {
+      const response = await fetch("http://localhost:3007/api/auth/verify", {
+        headers: { Authorization: `Bearer ${tokenToVerify}` }
+      });
+      return response.ok;
+    } catch (error) {
+      console.error("Error verifying token:", error);
+      return false;
+    }
+  }, []);
 
   useEffect(() => {
-    // Revisar si ya había sesión guardada
-    const storedUser = localStorage.getItem("user");
-    const storedToken = localStorage.getItem("token");
+    const checkAuthState = async () => {
+      const storedUser = localStorage.getItem("user");
+      const storedToken = localStorage.getItem("token");
 
-    if (storedUser && storedToken) {
-      try {
-        setUser(JSON.parse(storedUser));
-        setToken(storedToken);
-      } catch (error) {
-        console.error("Error parsing stored user:", error);
-        // Limpiar datos corruptos
-        localStorage.removeItem("user");
-        localStorage.removeItem("token");
+      if (storedUser && storedToken) {
+        try {
+          // ✅ Verificar si el token sigue siendo válido
+          const isValid = await verifyToken(storedToken);
+          
+          if (isValid) {
+            setUser(JSON.parse(storedUser));
+            setToken(storedToken);
+          } else {
+            // Token expirado o inválido - limpiar
+            clearAuthData();
+          }
+        } catch (error) {
+          console.error("Error parsing stored user:", error);
+          clearAuthData();
+        }
       }
-    }
-    setIsLoading(false); // 👈 Marcar como cargado
-  }, []);
+      setIsLoading(false);
+    };
+
+    checkAuthState();
+  }, [verifyToken, clearAuthData]);
 
   const login = useCallback((userData, tokenData) => {
     localStorage.setItem("user", JSON.stringify(userData));
@@ -37,20 +67,25 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token"); // 👈 Añadido: eliminar token también
-    setUser(null);
-    setToken(null);
-  }, []);
+    clearAuthData();
+  }, [clearAuthData]);
 
-  // 👈 Memoizar el valor del contexto para evitar re-renders innecesarios
+  // ✅ Función para hacer logout automático cuando el token expire
+  const handleTokenExpiration = useCallback(() => {
+    clearAuthData();
+    // Opcional: mostrar mensaje al usuario
+    // Swal.fire("Sesión expirada", "Tu sesión ha expirado. Por favor, inicia sesión nuevamente.", "warning");
+  }, [clearAuthData]);
+
   const contextValue = useMemo(() => ({
     user,
     token,
     login,
     logout,
-    isLoading
-  }), [user, token, login, logout, isLoading]);
+    isLoading,
+    handleTokenExpiration, // ✅ Exponer para usar en peticiones
+    verifyToken
+  }), [user, token, login, logout, isLoading, handleTokenExpiration, verifyToken]);
 
   return (
     <AuthContext.Provider value={contextValue}>
