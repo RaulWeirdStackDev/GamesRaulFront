@@ -5,7 +5,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { apiRequest } from "../../../utils/apiClient"; // ✅ Importar apiClient
 
 export const Login = () => {
-  const { login, handleTokenExpiration } = useAuth(); // ✅ Agregar handleTokenExpiration
+  const { login } = useAuth(); // ✅ Agregar handleTokenExpiration
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
